@@ -3,7 +3,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { ListView, ArchiveView } from './views';
+import { ListView, ArchiveView, CreateView } from './views';
+import { CreateIcon } from './components';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,6 +21,8 @@ export default function App() {
                 iconName = focused ? 'ios-list-box' : 'ios-list'; break;
               case 'Archive':
                 iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline'; break;
+              case 'Create':
+                return <CreateIcon focused={focused} />;
               default:
                 iconName = null;
             }
@@ -34,6 +37,7 @@ export default function App() {
         }}
       >
         <Tab.Screen name="List" component={ListView} />
+        <Tab.Screen name="Create" component={CreateView} />
         <Tab.Screen name="Archive" component={ArchiveView} />
       </Tab.Navigator>
     </NavigationContainer>
