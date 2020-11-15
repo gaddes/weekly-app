@@ -1,21 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
+import { ListView, ArchiveView } from './views';
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+
+            switch (route.name) {
+              case 'List':
+                iconName = focused ? 'ios-list-box' : 'ios-list'; break;
+              case 'Archive':
+                iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline'; break;
+              default:
+                iconName = null;
+            }
+
+            // You can return any component that you like here!
+            return <Ionicons name={iconName} size={size} color={color} />;
+          },
+        })}
+        tabBarOptions={{
+          activeTintColor: 'tomato',
+          inactiveTintColor: 'gray',
+        }}
+      >
+        <Tab.Screen name="List" component={ListView} />
+        <Tab.Screen name="Archive" component={ArchiveView} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
