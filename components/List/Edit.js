@@ -16,7 +16,9 @@ export default function Edit(props) {
 
 const styles = StyleSheet.create({
   button: {
-    border: '1px solid gray',
-    padding: '0.5rem',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: 'gray',
+    padding: 8,
   },
 });

@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { StatusBar } from 'expo-status-bar';
 
 import { ListView, ArchiveView, CreateView } from './views';
 import { CreateIcon } from './components';
@@ -40,6 +41,8 @@ export default function App() {
         <Tab.Screen name="Create" component={CreateView} />
         <Tab.Screen name="Archive" component={ArchiveView} />
       </Tab.Navigator>
+
+      <StatusBar style="dark" />
     </NavigationContainer>
   );
 }

@@ -38,14 +38,16 @@ export default function ListItem() {
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    flexFlow: 'column nowrap',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
 
   item: {
     display: 'flex',
-    flexFlow: 'row nowrap',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },

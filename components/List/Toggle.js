@@ -23,11 +23,14 @@ const styles = StyleSheet.create({
   button: {
     height: 48,
     width: 48,
-    border: '2px solid gray',
-    borderRadius: '50%',
+    borderWidth: 2,
+    borderStyle: 'solid',
+    borderColor: 'gray',
+    borderRadius: 24,
 
     display: 'flex',
-    flexFlow: 'row nowrap',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
     justifyContent: 'center',
     alignItems: 'center',
   },

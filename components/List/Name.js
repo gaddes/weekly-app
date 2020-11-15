@@ -18,7 +18,7 @@ export default function Name(props) {
 const styles = props => StyleSheet.create({
   text: {
     fontSize: 20,
-    marginHorizontal: '1rem',
-    textDecorationLine: props.completed && 'line-through',
+    marginHorizontal: 16,
+    textDecorationLine: props.completed ? 'line-through' : 'none',
   },
 });
