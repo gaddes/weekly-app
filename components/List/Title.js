@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-export default function Name(props) {
+export default function Title(props) {
   const toggleEdit = () => {
     props.setEditing(!props.editing);
   };
@@ -9,7 +9,7 @@ export default function Name(props) {
   return (
     <TouchableOpacity onPress={toggleEdit}>
       <Text style={styles(props).text}>
-        Lorem ipsum
+        {props.title}
       </Text>
     </TouchableOpacity>
   );

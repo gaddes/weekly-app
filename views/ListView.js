@@ -1,16 +1,34 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
-import { ListItem } from '../components';
-import logo from '../assets/logo.png';
+import { ListItems } from '../components';
+// TODO: where should this component live?
+import Day from '../components/List/Day';
+import data from '../data/mockData';
+
+const days = [
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
+];
 
 export default function ListView() {
+  const currentTasks = data[0];
+
   return (
-    <>
-      <ListItem />
-      <ListItem />
-      <ListItem />
-    </>
+    currentTasks.map((items, idx) => (
+      <View key={idx}>
+        <Day
+          day={days[idx]}
+          items={items}
+        />
+        <ListItems items={items} />
+      </View>
+    ))
   );
 }
 

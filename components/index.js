@@ -1,7 +1,7 @@
 import CreateIcon from './CreateIcon';
-import { Item } from './List';
+import { Items } from './List';
 
 export {
   CreateIcon,
-  Item as ListItem,
+  Items as ListItems,
 };
