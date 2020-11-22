@@ -1,13 +1,13 @@
 import React from 'react';
-import { StoreProvider } from 'easy-peasy';
+import { Provider } from 'react-redux';
 
 import Main from './Main';
 import { store } from './data/store';
 
 export default function App() {
   return (
-    <StoreProvider store={store}>
+    <Provider store={store}>
       <Main />
-    </StoreProvider>
+    </Provider>
   );
 }

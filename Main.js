@@ -1,20 +1,21 @@
 import React, { useEffect } from 'react';
-import { useStoreActions } from 'easy-peasy';
+import { useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import { fetchInitialState } from './data/reducers/taskSlice';
 import { ArchiveView, CreateView, ListView } from './views';
 import { CreateIcon } from './components';
 
 const Tab = createBottomTabNavigator();
 
 export default function Main() {
-  const fetchInitialState = useStoreActions(actions => actions.fetchInitialState);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetchInitialState();
+    dispatch(fetchInitialState());
   }, []);
 
   return (
