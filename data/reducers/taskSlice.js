@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
 import flatten from 'lodash/flatten';
 import find from 'lodash/find';
 
@@ -24,9 +24,9 @@ export const tasksSlice = createSlice({
     },
 
     setCompleted: (state, action) => {
-      // TODO: this is duplicating some of the logic in selectById (defined below).
-      //  Is there a better way to do this?
+      // Select item by ID
       const item = find(
+        // Flatten current tasks into single array to allow easier searching by ID
         flatten(state.tasks[0]),
         // action.payload is the ID of the item we want to toggle completed
         { id: action.payload }
@@ -58,15 +58,14 @@ export const toggleCompleted = id => dispatch => {
 // in the slice file. For example: `useSelector((state) => state.tasks.tasks)`
 export const selectTasks = state => state.tasks.tasks;
 
-export const selectCurrentTasks = state => selectTasks(state)[0];
-export const selectArchiveTasks = state => selectTasks(state)[1];
+export const selectCurrentTasks = createSelector(
+  selectTasks,
+  tasks => tasks[0],
+);
 
-// Flatten into single array to allow easier searching by ID
-export const selectFlattenedCurrentTasks = state => flatten(selectCurrentTasks(state));
-
-// Select item from state by ID
-export const selectById = state => id => (
-  find(selectFlattenedCurrentTasks(state), { id })
+export const selectArchiveTasks = createSelector(
+  selectTasks,
+  tasks => tasks[1],
 );
 
 export default tasksSlice.reducer;
