@@ -7,24 +7,20 @@ import Description from './Description';
 import Edit from './Edit';
 
 export default function ListItem(props) {
-  // For dev only. In reality this should be based on props.completed.
-  // Also note that perhaps we can take value directly from core data
-  //  and useState may not be required at all...
-  const [completed, setCompleted] = useState(props.completed);
   const [editing, setEditing] = useState(false);
 
   return (
     <View style={styles.container}>
       <View style={styles.item}>
         <Toggle
+          id={props.id}
           priority={props.priority}
-          completed={completed}
-          setCompleted={setCompleted}
+          completed={props.completed}
         />
 
         <Title
           title={props.title}
-          completed={completed}
+          completed={props.completed}
           editing={editing}
           setEditing={setEditing}
         />

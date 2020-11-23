@@ -2,6 +2,10 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { useSelector } from 'react-redux';
+// TODO: create helper function similar to easy-peasy that will
+//  allow us to pass a string param and it will look up the correct
+//  selector automatically from the store e.g.
+//  const currentTasks = useStore('currentTasks');
 import { selectCurrentTasks } from '../data/reducers/taskSlice';
 
 import { ListItems } from '../components';
@@ -19,12 +23,13 @@ const days = [
 ];
 
 export default function ListView() {
-  const currentTasks = useSelector(selectCurrentTasks);
+  const tasks = useSelector(selectCurrentTasks);
 
-  if (!currentTasks) return null;
+  // TODO: add loading spinner and/or "no current tasks" screen
+  if (!tasks) return null;
 
   return (
-    currentTasks.map((items, idx) => (
+    tasks.map((items, idx) => (
       <View key={idx}>
         <Day
           day={days[idx]}
