@@ -1,10 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import { toggleCompleted } from '../../data/reducers/taskSlice';
+
 export default function Toggle(props) {
+  const dispatch = useDispatch();
+
   const toggle = () => {
-    props.setCompleted(!props.completed);
+    dispatch(toggleCompleted(props.id));
   };
 
   return (
