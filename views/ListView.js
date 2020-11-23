@@ -2,12 +2,11 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { useSelector } from 'react-redux';
-import { selectTasks } from '../data/reducers/taskSlice';
+import { selectCurrentTasks } from '../data/reducers/taskSlice';
 
 import { ListItems } from '../components';
 // TODO: where should this component live?
 import Day from '../components/List/Day';
-import data from '../data/mockData';
 
 const days = [
   'Monday',
@@ -20,9 +19,9 @@ const days = [
 ];
 
 export default function ListView() {
-  const currentTasks = data[0];
-  const tasks = useSelector(selectTasks);
-  // const currentTasks = tasks[0];
+  const currentTasks = useSelector(selectCurrentTasks);
+
+  if (!currentTasks) return null;
 
   return (
     currentTasks.map((items, idx) => (

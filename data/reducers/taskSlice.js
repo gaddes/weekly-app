@@ -39,5 +39,7 @@ export const fetchInitialState = () => dispatch => {
 // the state. Selectors can also be defined inline where they're used instead of
 // in the slice file. For example: `useSelector((state) => state.tasks.tasks)`
 export const selectTasks = state => state.tasks.tasks;
+export const selectCurrentTasks = state => state.tasks.tasks[0];
+export const selectArchiveTasks = state => state.tasks.tasks[1];
 
 export default tasksSlice.reducer;
