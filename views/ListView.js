@@ -7,20 +7,11 @@ import { useSelector } from 'react-redux';
 //  selector automatically from the store e.g.
 //  const currentTasks = useStore('currentTasks');
 import { selectCurrentTasks } from '../data/reducers/taskSlice';
+import { days } from '../helpers';
 
 import { ListItems } from '../components';
 // TODO: where should this component live?
 import Day from '../components/List/Day';
-
-const days = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday',
-];
 
 export default function ListView() {
   const tasks = useSelector(selectCurrentTasks);
