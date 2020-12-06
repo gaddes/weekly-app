@@ -19,9 +19,9 @@ export default function Priority({ setValue }) {
         style={[
           styles.button,
           // Apply active styles if current 'active' value relates to this button
-          active === priorities[0] && styles.buttonActive
+          active === 0 && styles.buttonActive
         ]}
-        onPress={() => handlePress('priority', priorities[0])}
+        onPress={() => handlePress('priority', 0)}
       >
         <Text>{priorities[0]}</Text>
       </TouchableOpacity>
@@ -29,9 +29,9 @@ export default function Priority({ setValue }) {
       <TouchableOpacity
         style={[
           styles.button,
-          active === priorities[1] && styles.buttonActive
+          active === 1 && styles.buttonActive
         ]}
-        onPress={() => handlePress('priority', priorities[1])}
+        onPress={() => handlePress('priority', 1)}
       >
         <Text>{priorities[1]}</Text>
       </TouchableOpacity>
@@ -39,9 +39,9 @@ export default function Priority({ setValue }) {
       <TouchableOpacity
         style={[
           styles.button,
-          active === priorities[2] && styles.buttonActive
+          active === 2 && styles.buttonActive
         ]}
-        onPress={() => handlePress('priority', priorities[2])}
+        onPress={() => handlePress('priority', 2)}
       >
         <Text>{priorities[2]}</Text>
       </TouchableOpacity>

@@ -19,9 +19,9 @@ export default function Days({ setValue }) {
         style={[
           styles.button,
           // Apply active styles if current 'active' value relates to this button
-          active === days[0] && styles.buttonActive
+          active === 0 && styles.buttonActive
         ]}
-        onPress={() => handlePress('day', days[0])}
+        onPress={() => handlePress('day', 0)}
       >
         <Text>{days[0]}</Text>
       </TouchableOpacity>
@@ -29,9 +29,9 @@ export default function Days({ setValue }) {
       <TouchableOpacity
         style={[
           styles.button,
-          active === days[1] && styles.buttonActive
+          active === 1 && styles.buttonActive
         ]}
-        onPress={() => handlePress('day', days[1])}
+        onPress={() => handlePress('day', 1)}
       >
         <Text>{days[1]}</Text>
       </TouchableOpacity>
@@ -39,9 +39,9 @@ export default function Days({ setValue }) {
       <TouchableOpacity
         style={[
           styles.button,
-          active === days[2] && styles.buttonActive
+          active === 2 && styles.buttonActive
         ]}
-        onPress={() => handlePress('day', days[2])}
+        onPress={() => handlePress('day', 2)}
       >
         <Text>{days[2]}</Text>
       </TouchableOpacity>
@@ -49,9 +49,9 @@ export default function Days({ setValue }) {
       <TouchableOpacity
         style={[
           styles.button,
-          active === days[3] && styles.buttonActive
+          active === 3 && styles.buttonActive
         ]}
-        onPress={() => handlePress('day', days[3])}
+        onPress={() => handlePress('day', 3)}
       >
         <Text>{days[3]}</Text>
       </TouchableOpacity>
@@ -59,9 +59,9 @@ export default function Days({ setValue }) {
       <TouchableOpacity
         style={[
           styles.button,
-          active === days[4] && styles.buttonActive
+          active === 4 && styles.buttonActive
         ]}
-        onPress={() => handlePress('day', days[4])}
+        onPress={() => handlePress('day', 4)}
       >
         <Text>{days[4]}</Text>
       </TouchableOpacity>
@@ -69,9 +69,9 @@ export default function Days({ setValue }) {
       <TouchableOpacity
         style={[
           styles.button,
-          active === days[5] && styles.buttonActive
+          active === 5 && styles.buttonActive
         ]}
-        onPress={() => handlePress('day', days[5])}
+        onPress={() => handlePress('day', 5)}
       >
         <Text>{days[5]}</Text>
       </TouchableOpacity>
@@ -79,9 +79,9 @@ export default function Days({ setValue }) {
       <TouchableOpacity
         style={[
           styles.button,
-          active === days[6] && styles.buttonActive
+          active === 6 && styles.buttonActive
         ]}
-        onPress={() => handlePress('day', days[6])}
+        onPress={() => handlePress('day', 6)}
       >
         <Text>{days[6]}</Text>
       </TouchableOpacity>
