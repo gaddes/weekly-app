@@ -31,7 +31,9 @@ export default function Main() {
               case 'Archive':
                 iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline'; break;
               case 'Create':
-                return <CreateIcon focused={focused} />;
+                // TODO: re-implement this larger "Create" button
+                // return <CreateIcon focused={focused} />;
+                iconName = focused ? 'ios-add-circle' : 'ios-add-circle-outline'; break;
               default:
                 iconName = null;
             }

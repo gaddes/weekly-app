@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 
 import { useSelector } from 'react-redux';
 // TODO: create helper function similar to easy-peasy that will
@@ -20,15 +20,17 @@ export default function ListView() {
   if (!tasks) return null;
 
   return (
-    tasks.map((items, idx) => (
-      <View key={idx}>
-        <Day
-          day={days[idx]}
-          items={items}
-        />
-        <ListItems items={items} />
-      </View>
-    ))
+    <ScrollView>
+      {tasks.map((items, idx) => (
+        <View key={idx}>
+          <Day
+            day={days[idx]}
+            items={items}
+          />
+          <ListItems items={items} />
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 

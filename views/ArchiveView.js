@@ -1,10 +1,10 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, ScrollView } from 'react-native';
 
 export default function ArchiveView() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <ScrollView>
       <Text>Archive...</Text>
-    </View>
+    </ScrollView>
   );
 }

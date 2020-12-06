@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import { useForm } from 'react-hook-form';
 
 import Days from './Days';
+import Priority from './Priority';
 
 export default function Create() {
   const { register, handleSubmit, setValue } = useForm();
@@ -11,6 +12,7 @@ export default function Create() {
     register('title');
     register('description');
     register('day');
+    register('priority');
   }, [register])
 
   const onSubmit = data => {
@@ -30,6 +32,8 @@ export default function Create() {
       }} />
 
       <Days setValue={setValue} />
+
+      <Priority setValue={setValue} />
 
       <View>
         <Text>Priority</Text>
