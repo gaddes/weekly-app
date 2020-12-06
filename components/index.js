@@ -1,9 +1,13 @@
 import CreateIcon from './CreateIcon';
-import { Items } from './List';
+import { CurrentItems, Day } from './Current';
 import { Create } from './Create';
+import { ArchiveItems, Priority } from './Archive';
 
 export {
   CreateIcon,
-  Items as ListItems,
+  CurrentItems,
+  Day,
   Create,
+  ArchiveItems,
+  Priority,
 };

@@ -1,17 +1,14 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
-
 import { useSelector } from 'react-redux';
+
 // TODO: create helper function similar to easy-peasy that will
 //  allow us to pass a string param and it will look up the correct
 //  selector automatically from the store e.g.
 //  const currentTasks = useStore('currentTasks');
 import { selectCurrentTasks } from '../data/reducers/taskSlice';
 import { days } from '../helpers';
-
-import { ListItems } from '../components';
-// TODO: where should this component live?
-import Day from '../components/List/Day';
+import { CurrentItems, Day } from '../components';
 
 export default function ListView() {
   const tasks = useSelector(selectCurrentTasks);
@@ -27,7 +24,7 @@ export default function ListView() {
             day={days[idx]}
             items={items}
           />
-          <ListItems items={items} />
+          <CurrentItems items={items} />
         </View>
       ))}
     </ScrollView>

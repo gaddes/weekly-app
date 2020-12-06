@@ -3,12 +3,13 @@ import flatten from 'lodash/flatten';
 import find from 'lodash/find';
 import { v4 as uuidv4 } from 'uuid';
 
-import mockData from '../mockData';
+import mockData, { current, archive } from '../mockData';
 
 export const tasksSlice = createSlice({
   name: 'tasks',
   initialState: {
-    tasks: [],
+    current: [],
+    archive: [],
   },
   reducers: {
     addTask: (state, action) => {
@@ -18,7 +19,7 @@ export const tasksSlice = createSlice({
       // immutable state based off those changes
       const { day, title, description, priority } = action.payload;
 
-      state.tasks[0][day].push({
+      state.current[day].push({
         id: uuidv4(),
         title,
         description,
@@ -29,14 +30,17 @@ export const tasksSlice = createSlice({
     },
 
     setInitialState: (state, action) => {
-      state.tasks = action.payload;
+      const { current, archive } = action.payload;
+
+      state.current = current;
+      state.archive = archive;
     },
 
     setCompleted: (state, action) => {
       // Select item by ID
       const item = find(
         // Flatten current tasks into single array to allow easier searching by ID
-        flatten(state.tasks[0]),
+        flatten(state.current),
         // action.payload is the ID of the item we want to toggle completed
         { id: action.payload }
       );
@@ -53,28 +57,16 @@ export const { addTask, setInitialState, setCompleted } = tasksSlice.actions;
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched
 export const fetchInitialState = () => dispatch => {
-  // const data = await fetchData();
-  const data = mockData;
-  dispatch(setInitialState(data));
+  // TODO: fetch REAL data from core data
+  dispatch(setInitialState({ current, archive }));
 };
 
 export const toggleCompleted = id => dispatch => {
   dispatch(setCompleted(id));
 };
 
-// The function below is called a selector and allows us to select a value from
-// the state. Selectors can also be defined inline where they're used instead of
-// in the slice file. For example: `useSelector((state) => state.tasks.tasks)`
-export const selectTasks = state => state.tasks.tasks;
-
-export const selectCurrentTasks = createSelector(
-  selectTasks,
-  tasks => tasks[0],
-);
-
-export const selectArchiveTasks = createSelector(
-  selectTasks,
-  tasks => tasks[1],
-);
+// Selectors
+export const selectCurrentTasks = state => state.tasks.current;
+export const selectArchiveTasks = state => state.tasks.archive;
 
 export default tasksSlice.reducer;

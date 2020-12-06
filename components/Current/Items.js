@@ -2,7 +2,7 @@ import React from 'react';
 
 import Item from './Item';
 
-export default function ListItems(props) {
+export default function CurrentItems(props) {
   if (!props.items.length) return null;
 
   return (
