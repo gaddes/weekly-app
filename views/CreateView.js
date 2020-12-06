@@ -1,12 +1,12 @@
 import React from 'react';
-import { View } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import { Create } from '../components';
 
 export default function CreateView() {
   return (
-    <View>
+    <ScrollView>
       <Create />
-    </View>
+    </ScrollView>
   );
 }
