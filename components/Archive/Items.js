@@ -6,7 +6,7 @@ export default function ArchiveItems(props) {
 
   return (
     props.items.map(task => (
-      <View>
+      <View key={task.id}>
         <Text>{task.title}</Text>
       </View>
     ))
