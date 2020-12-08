@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import Feather from '@expo/vector-icons/Feather';
 
 import { toggleCompleted } from '../../data/reducers/taskSlice';
 
@@ -18,7 +18,11 @@ export default function Toggle(props) {
       style={styles.button}
     >
       {props.completed && (
-        <Ionicons name="ios-checkmark" size={72} color="tomato" />
+        <Feather
+          name="check"
+          size={32}
+          color="tomato"
+        />
       )}
     </TouchableOpacity>
   );
