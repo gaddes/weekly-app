@@ -1,10 +1,21 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const initialCurrent = [
+  // Mon, Tue, Wed, Thu, Fri, Sat, Sun
+  [], [], [], [], [], [], [],
+];
+
+const initialArchive = [
+  // Low, Medium, High
+  [], [], [],
+];
+
 export default {
   getCurrent: async () => {
     try {
       const tasks = await AsyncStorage.getItem('current');
-      return tasks !== null ? JSON.parse(tasks) : null;
+      // If no tasks exist (e.g. first app load), return base array
+      return tasks !== null ? JSON.parse(tasks) : initialCurrent;
     } catch (e) {
       console.log('error', e);
     }
@@ -22,7 +33,8 @@ export default {
   getArchive: async () => {
     try {
       const tasks = await AsyncStorage.getItem('archive');
-      return tasks !== null ? JSON.parse(tasks) : null;
+      // If no tasks exist (e.g. first app load), return base array
+      return tasks !== null ? JSON.parse(tasks) : initialArchive;
     } catch (e) {
       console.log('error', e);
     }

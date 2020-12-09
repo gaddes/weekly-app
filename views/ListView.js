@@ -1,20 +1,22 @@
 import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import isEmpty from 'lodash/isEmpty';
 
-// TODO: create helper function similar to easy-peasy that will
-//  allow us to pass a string param and it will look up the correct
-//  selector automatically from the store e.g.
-//  const currentTasks = useStore('currentTasks');
-import { selectCurrentTasks } from '../data/reducers/taskSlice';
+import tasksModel from '../data/store/tasks';
 import { days } from '../helpers';
 import { CurrentItems, Day } from '../components';
 
 export default function ListView() {
+  // TODO: create helper function similar to easy-peasy that will
+  //  allow us to pass a string param and it will look up the correct
+  //  selector automatically from the store e.g.
+  //  const currentTasks = useStore('currentTasks');
+  const { selectCurrentTasks } = tasksModel.selectors;
   const tasks = useSelector(selectCurrentTasks);
 
   // TODO: add loading spinner and/or "no current tasks" screen
-  if (!tasks) return null;
+  if (isEmpty(tasks)) return null;
 
   return (
     <ScrollView>
