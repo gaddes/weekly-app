@@ -9,6 +9,7 @@ import { Text, TextInput } from '../common';
 
 import Days from './Days';
 import Priority from './Priority';
+import Success from './Success';
 
 export default function Create() {
   const { saveTask } = tasksModel.actions;
@@ -18,6 +19,8 @@ export default function Create() {
   const [description, setDescription] = useState('');
   const [day, setDay] = useState(null);
   const [priority, setPriority] = useState(null);
+
+  const [success, setSuccess] = useState(false);
 
   const resetValues = () => {
     setTitle('');
@@ -46,8 +49,11 @@ export default function Create() {
     const data = { title, description, day, priority };
 
     dispatch(saveTask(data));
+    setSuccess(true);
     resetValues();
   };
+
+  if (success) { return <Success setSuccess={setSuccess} />; }
 
   return (
     <View style={styles.container}>
@@ -82,7 +88,7 @@ export default function Create() {
         onPress={submit}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

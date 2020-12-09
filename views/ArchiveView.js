@@ -14,7 +14,7 @@ export default function ArchiveView() {
   if (!tasks) return null;
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       {tasks.map((items, idx) => (
         <View key={idx}>
           <Priority

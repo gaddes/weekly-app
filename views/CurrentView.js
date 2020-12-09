@@ -19,7 +19,7 @@ export default function CurrentView() {
   if (isEmpty(tasks)) return null;
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       {tasks.map((items, idx) => (
         <View key={idx}>
           <Day
