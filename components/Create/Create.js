@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
 
-import { addTask } from '../../data/reducers/taskSlice';
+import { saveTask } from '../../data/reducers/taskSlice';
 import { Text, TextInput } from '../common';
 
 import Days from './Days';
@@ -38,7 +38,7 @@ export default function Create() {
       );
       return;
     }
-    dispatch(addTask(data));
+    dispatch(saveTask(data));
   };
 
   return (
