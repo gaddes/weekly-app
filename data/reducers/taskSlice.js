@@ -25,7 +25,7 @@ export const tasksSlice = createSlice({
         description,
         completed: false,
         priority,
-        dateCreated: new Date(),
+        dateCreated: Date.now(),
       });
     },
 
