@@ -10,6 +10,7 @@ export default function CurrentItems(props) {
       <Item
         key={task.id}
         id={task.id}
+        dayIdx={props.dayIdx}
         title={task.title}
         description={task.description}
         completed={task.completed}

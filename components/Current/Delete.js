@@ -1,14 +1,20 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
 
+import tasksModel from '../../data/store/tasks';
 import { Text } from '../common';
 
 export default function Delete(props) {
   if (!props.editing) return null;
 
+  const dispatch = useDispatch();
+  const { id, dayIdx: day } = props;
+  const { deleteTask } = tasksModel.actions;
+
   return (
     <TouchableOpacity
-      onPress={() => console.log('delete item')}
+      onPress={() => dispatch(deleteTask({ id, day }))}
       style={styles.button}
     >
       <Text style={styles.text}>
