@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 import Toggle from './Toggle';
 import Title from './Title';
 import Description from './Description';
-import Edit from './Edit';
+import Delete from './Delete';
 
 export default function ListItem(props) {
   const [editing, setEditing] = useState(false);
@@ -25,7 +25,7 @@ export default function ListItem(props) {
           setEditing={setEditing}
         />
 
-        <Edit
+        <Delete
           editing={editing}
         />
       </View>

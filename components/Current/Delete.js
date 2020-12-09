@@ -3,16 +3,16 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { Text } from '../common';
 
-export default function Edit(props) {
+export default function Delete(props) {
   if (!props.editing) return null;
 
   return (
     <TouchableOpacity
-      onPress={() => console.log('edit item on create screen')}
+      onPress={() => console.log('delete item')}
       style={styles.button}
     >
       <Text style={styles.text}>
-        Edit
+        Delete
       </Text>
     </TouchableOpacity>
   );
