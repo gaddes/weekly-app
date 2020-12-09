@@ -3,9 +3,10 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Feather from '@expo/vector-icons/Feather';
 
-import { toggleCompleted } from '../../data/reducers/taskSlice';
+import tasksModel from '../../data/store/tasks';
 
 export default function Toggle(props) {
+  const { toggleCompleted } = tasksModel.actions;
   const dispatch = useDispatch();
 
   const toggle = () => {

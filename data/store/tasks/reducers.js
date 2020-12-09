@@ -1,11 +1,9 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import flatten from 'lodash/flatten';
 import find from 'lodash/find';
 import { v4 as uuidv4 } from 'uuid';
 
-import mockData, { current, archive } from '../mockData';
-
-export const tasksSlice = createSlice({
+export const taskSlice = createSlice({
   name: 'tasks',
   initialState: {
     current: [],
@@ -13,19 +11,19 @@ export const tasksSlice = createSlice({
   },
   reducers: {
     addTask: (state, action) => {
+      const { day, title, description, priority } = action.payload;
+
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes
-      const { day, title, description, priority } = action.payload;
-
       state.current[day].push({
         id: uuidv4(),
         title,
         description,
         completed: false,
         priority,
-        dateCreated: new Date(),
+        dateCreated: Date.now(),
       });
     },
 
@@ -50,23 +48,8 @@ export const tasksSlice = createSlice({
   },
 });
 
-export const { addTask, setInitialState, setCompleted } = tasksSlice.actions;
+// These actions will be re-exported from a separate 'actions' file;
+//  they should never be imported by a component directly from here.
+export const { addTask, setInitialState, setCompleted } = taskSlice.actions;
 
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(fetchInitialState())`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched
-export const fetchInitialState = () => dispatch => {
-  // TODO: fetch REAL data from core data
-  dispatch(setInitialState({ current, archive }));
-};
-
-export const toggleCompleted = id => dispatch => {
-  dispatch(setCompleted(id));
-};
-
-// Selectors
-export const selectCurrentTasks = state => state.tasks.current;
-export const selectArchiveTasks = state => state.tasks.archive;
-
-export default tasksSlice.reducer;
+export default taskSlice.reducer;

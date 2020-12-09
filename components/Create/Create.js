@@ -5,13 +5,14 @@ import { useForm } from 'react-hook-form';
 import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
 
-import { addTask } from '../../data/reducers/taskSlice';
+import tasksModel from '../../data/store/tasks';
 import { Text, TextInput } from '../common';
 
 import Days from './Days';
 import Priority from './Priority';
 
 export default function Create() {
+  const { saveTask } = tasksModel.actions;
   const dispatch = useDispatch();
   const { register, handleSubmit, setValue } = useForm();
 
@@ -38,7 +39,7 @@ export default function Create() {
       );
       return;
     }
-    dispatch(addTask(data));
+    dispatch(saveTask(data));
   };
 
   return (

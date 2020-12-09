@@ -5,13 +5,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import { fetchInitialState } from './data/reducers/taskSlice';
+import tasksModel from './data/store/tasks';
 import { ArchiveView, CreateView, ListView } from './views';
 import { CreateIcon } from './components';
 
 const Tab = createBottomTabNavigator();
 
 export default function Main() {
+  const { fetchInitialState } = tasksModel.actions;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -26,11 +27,12 @@ export default function Main() {
             let iconName;
 
             switch (route.name) {
-              case 'List':
+              case 'Current':
                 iconName = focused ? 'ios-list-box' : 'ios-list'; break;
               case 'Archive':
-                iconName = focused ? 'ios-information-circle' : 'ios-information-circle-outline'; break;
-              case 'Create':
+                // TODO: why doesn't archive-outline work?
+                iconName = focused ? 'ios-archive' : 'ios-archive'; break;
+              case 'New':
                 // TODO: re-implement this larger "Create" button
                 // return <CreateIcon focused={focused} />;
                 iconName = focused ? 'ios-add-circle' : 'ios-add-circle-outline'; break;
@@ -47,8 +49,8 @@ export default function Main() {
           inactiveTintColor: 'gray',
         }}
       >
-        <Tab.Screen name="List" component={ListView} />
-        <Tab.Screen name="Create" component={CreateView} />
+        <Tab.Screen name="Current" component={ListView} />
+        <Tab.Screen name="New" component={CreateView} />
         <Tab.Screen name="Archive" component={ArchiveView} />
       </Tab.Navigator>
 
