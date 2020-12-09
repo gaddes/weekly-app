@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+
+import { Text } from '../common';
 
 export default function Title(props) {
   const toggleEdit = () => {
