@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
 import { days } from '../../helpers';
+import { Text } from '../common';
 
 export default function Days({ setValue }) {
   const [active, setActive] = useState();
@@ -23,7 +24,9 @@ export default function Days({ setValue }) {
         ]}
         onPress={() => handlePress('day', 0)}
       >
-        <Text>{days[0]}</Text>
+        <Text style={styles.day}>
+          {days[0]}
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -33,7 +36,9 @@ export default function Days({ setValue }) {
         ]}
         onPress={() => handlePress('day', 1)}
       >
-        <Text>{days[1]}</Text>
+        <Text style={styles.day}>
+          {days[1]}
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -43,7 +48,9 @@ export default function Days({ setValue }) {
         ]}
         onPress={() => handlePress('day', 2)}
       >
-        <Text>{days[2]}</Text>
+        <Text style={styles.day}>
+          {days[2]}
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -53,7 +60,9 @@ export default function Days({ setValue }) {
         ]}
         onPress={() => handlePress('day', 3)}
       >
-        <Text>{days[3]}</Text>
+        <Text style={styles.day}>
+          {days[3]}
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -63,7 +72,9 @@ export default function Days({ setValue }) {
         ]}
         onPress={() => handlePress('day', 4)}
       >
-        <Text>{days[4]}</Text>
+        <Text style={styles.day}>
+          {days[4]}
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -73,7 +84,9 @@ export default function Days({ setValue }) {
         ]}
         onPress={() => handlePress('day', 5)}
       >
-        <Text>{days[5]}</Text>
+        <Text style={styles.day}>
+          {days[5]}
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -83,7 +96,9 @@ export default function Days({ setValue }) {
         ]}
         onPress={() => handlePress('day', 6)}
       >
-        <Text>{days[6]}</Text>
+        <Text style={styles.day}>
+          {days[6]}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -92,12 +107,19 @@ export default function Days({ setValue }) {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: 'white',
-    margin: 8,
+    marginVertical: 8,
+    marginHorizontal: 12,
     padding: 16,
-    borderRadius: 5,
+    borderRadius: 6,
     textAlign: 'center',
   },
+
   buttonActive: {
     backgroundColor: 'lightgrey',
+  },
+
+  day: {
+    fontSize: 20,
+    textAlign: 'center',
   },
 });

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
 import { priorities } from '../../helpers';
+import { Text } from '../common';
 
 export default function Priority({ setValue }) {
   const [active, setActive] = useState();
@@ -23,7 +24,9 @@ export default function Priority({ setValue }) {
         ]}
         onPress={() => handlePress('priority', 0)}
       >
-        <Text>{priorities[0]}</Text>
+        <Text style={styles.priority}>
+          {priorities[0]}
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -33,7 +36,9 @@ export default function Priority({ setValue }) {
         ]}
         onPress={() => handlePress('priority', 1)}
       >
-        <Text>{priorities[1]}</Text>
+        <Text style={styles.priority}>
+          {priorities[1]}
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -43,7 +48,9 @@ export default function Priority({ setValue }) {
         ]}
         onPress={() => handlePress('priority', 2)}
       >
-        <Text>{priorities[2]}</Text>
+        <Text style={styles.priority}>
+          {priorities[2]}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -52,12 +59,19 @@ export default function Priority({ setValue }) {
 const styles = StyleSheet.create({
   button: {
     backgroundColor: 'white',
-    margin: 8,
+    marginVertical: 8,
+    marginHorizontal: 12,
     padding: 16,
-    borderRadius: 5,
+    borderRadius: 6,
     textAlign: 'center',
   },
+
   buttonActive: {
     backgroundColor: 'lightgrey',
+  },
+
+  priority: {
+    fontSize: 20,
+    textAlign: 'center',
   },
 });

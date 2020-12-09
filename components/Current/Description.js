@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+
+import { Text } from '../common';
 
 export default function Description(props) {
   if (!props.editing) return null;
@@ -13,6 +15,7 @@ export default function Description(props) {
 
 const styles = StyleSheet.create({
   text: {
+    fontSize: 16,
     marginLeft: 64,
   },
 });

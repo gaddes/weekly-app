@@ -1,5 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
+
+import { Text } from '../common';
 
 export default function Day(props) {
   if (!props.items.length) return null;
@@ -13,7 +15,6 @@ export default function Day(props) {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 32,
     marginHorizontal: 16,
   },
 });

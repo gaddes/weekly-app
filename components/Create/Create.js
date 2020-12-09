@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
+import { StyleSheet, View, Button, Alert } from 'react-native';
 import { useForm } from 'react-hook-form';
 import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
 
 import { addTask } from '../../data/reducers/taskSlice';
+import { Text, TextInput } from '../common';
 
 import Days from './Days';
 import Priority from './Priority';
@@ -41,31 +42,54 @@ export default function Create() {
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text>Title</Text>
-      <TextInput onChangeText={text => {
-        setValue('title', text);
-      }} />
+      <TextInput
+        style={styles.input}
+        onChangeText={text => {
+          setValue('title', text);
+        }}
+      />
 
       <Text>Description (optional)</Text>
-      <TextInput onChangeText={text => {
-        setValue('description', text);
-      }} />
+      <TextInput
+        style={[styles.input, styles.multiline]}
+        multiline
+        numberOfLines={4} // This seems to have no effect...
+        onChangeText={text => {
+          setValue('description', text);
+        }}
+      />
 
       <Days setValue={setValue} />
 
       <Priority setValue={setValue} />
 
-      <View>
-        <Text>Priority</Text>
-      </View>
-
-      <View>
-        <Button
-          title="Create"
-          onPress={handleSubmit(onSubmit)}
-        />
-      </View>
+      <Button
+        title="Create"
+        onPress={handleSubmit(onSubmit)}
+      />
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 12,
+  },
+
+  input: {
+    margin: 12,
+    padding: 6,
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderRadius: 6,
+    borderColor: 'darkgrey',
+    fontSize: 18,
+  },
+
+  multiline: {
+    minHeight: 100,
+    height: 'auto',
+  },
+});
