@@ -7,7 +7,7 @@ import tasksModel from '../data/store/tasks';
 import { days } from '../helpers';
 import { CurrentItems, Day } from '../components';
 
-export default function ListView() {
+export default function CurrentView() {
   // TODO: create helper function similar to easy-peasy that will
   //  allow us to pass a string param and it will look up the correct
   //  selector automatically from the store e.g.

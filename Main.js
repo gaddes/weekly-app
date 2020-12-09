@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import tasksModel from './data/store/tasks';
-import { ArchiveView, CreateView, ListView } from './views';
+import { ArchiveView, CreateView, CurrentView } from './views';
 import { CreateIcon } from './components';
 
 const Tab = createBottomTabNavigator();
@@ -49,7 +49,7 @@ export default function Main() {
           inactiveTintColor: 'gray',
         }}
       >
-        <Tab.Screen name="Current" component={ListView} />
+        <Tab.Screen name="Current" component={CurrentView} />
         <Tab.Screen name="New" component={CreateView} />
         <Tab.Screen name="Archive" component={ArchiveView} />
       </Tab.Navigator>
