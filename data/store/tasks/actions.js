@@ -5,7 +5,7 @@ import { archive } from '../../mockData';
 
 // Actions taken from slice, to be re-exported by this file.
 // Components wishing to use the store actions should import from this file only.
-import { setInitialState, setCurrent, setCompleted } from './reducers';
+import { setInitialState, setCurrent } from './reducers';
 
 // Thunks
 // The function below is called a thunk and allows us to perform async logic. It
@@ -18,10 +18,6 @@ const fetchInitialState = () => async dispatch => {
   const archiveTest = await tasks.getArchive();
 
   dispatch(setInitialState({ current, archive }));
-};
-
-const toggleCompleted = id => dispatch => {
-  dispatch(setCompleted(id));
 };
 
 const addTask = item => (dispatch, getState) => {
@@ -72,14 +68,32 @@ const deleteTask = item => (dispatch, getState) => {
     .catch(e => { console.error(e); });
 };
 
+const toggleCompleted = id => (dispatch, getState) => {
+  const state = getState().tasks;
+
+  const current = state.current.map(day => {
+    return day.map(item => {
+      return item.id === id
+        // If item matches ID, toggle completed value
+        ? { ...item, completed: !item.completed }
+        : item;
+    });
+  });
+
+  tasks.setCurrent(current)
+    .then(() => {
+      dispatch(setCurrent(current));
+    })
+    .catch(e => { console.error(e); });
+};
+
 export default {
   // Actions
   setInitialState,
   setCurrent,
-  setCompleted,
   // Thunks
   addTask,
   deleteTask,
-  fetchInitialState,
   toggleCompleted,
+  fetchInitialState,
 };
