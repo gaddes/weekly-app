@@ -12,7 +12,7 @@ import Priority from './Priority';
 import Success from './Success';
 
 export default function Create() {
-  const { saveTask } = tasksModel.actions;
+  const { addTask } = tasksModel.actions;
   const dispatch = useDispatch();
 
   const [title, setTitle] = useState('');
@@ -48,7 +48,7 @@ export default function Create() {
 
     const data = { title, description, day, priority };
 
-    dispatch(saveTask(data));
+    dispatch(addTask(data));
     setSuccess(true);
     resetValues();
   };

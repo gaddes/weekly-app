@@ -24,7 +24,7 @@ const toggleCompleted = id => dispatch => {
   dispatch(setCompleted(id));
 };
 
-const saveTask = item => (dispatch, getState) => {
+const addTask = item => (dispatch, getState) => {
   const { day, title, description, priority } = item;
   const state = getState().tasks;
 
@@ -58,6 +58,7 @@ const saveTask = item => (dispatch, getState) => {
 };
 
 const deleteTask = item => (dispatch, getState) => {
+  // TODO: can this be simplified so we only need the id?
   const { day, id } = item;
   const state = getState().tasks;
 
@@ -77,7 +78,7 @@ export default {
   setCurrent,
   setCompleted,
   // Thunks
-  saveTask,
+  addTask,
   deleteTask,
   fetchInitialState,
   toggleCompleted,
