@@ -9,12 +9,11 @@ export default function Delete(props) {
   if (!props.editing) return null;
 
   const dispatch = useDispatch();
-  const { id, dayIdx: day } = props;
   const { deleteTask } = tasksModel.actions;
 
   return (
     <TouchableOpacity
-      onPress={() => dispatch(deleteTask({ id, day }))}
+      onPress={() => dispatch(deleteTask(props.id))}
       style={styles.button}
     >
       <Text style={styles.text}>

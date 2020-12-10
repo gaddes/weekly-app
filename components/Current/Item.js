@@ -26,9 +26,8 @@ export default function ListItem(props) {
         />
 
         <Delete
-          editing={editing}
           id={props.id}
-          dayIdx={props.dayIdx}
+          editing={editing}
         />
       </View>
 

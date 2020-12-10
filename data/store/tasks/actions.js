@@ -53,13 +53,13 @@ const addTask = item => (dispatch, getState) => {
     .catch(e => { console.error(e); });
 };
 
-const deleteTask = item => (dispatch, getState) => {
-  // TODO: can this be simplified so we only need the id?
-  const { day, id } = item;
+const deleteTask = id => (dispatch, getState) => {
   const state = getState().tasks;
 
-  const current = [...state.current];
-  current[day] = current[day].filter(task => task.id !== id);
+  const current = state.current.map(day => (
+    // Filter out item with matching ID
+    day.filter(item => item.id !== id)
+  ));
 
   tasks.setCurrent(current)
     .then(() => {

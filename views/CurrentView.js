@@ -26,10 +26,7 @@ export default function CurrentView() {
             day={days[idx]}
             items={items}
           />
-          <CurrentItems
-            dayIdx={idx}
-            items={items}
-          />
+          <CurrentItems items={items} />
         </View>
       ))}
     </ScrollView>
