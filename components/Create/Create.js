@@ -53,7 +53,7 @@ export default function Create() {
     resetValues();
   };
 
-  if (success) { return <Success setSuccess={setSuccess} />; }
+  if (success) return <Success setSuccess={setSuccess} />;
 
   return (
     <View style={styles.container}>

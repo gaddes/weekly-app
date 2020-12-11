@@ -21,7 +21,9 @@ export default function CurrentView() {
   if (isEmpty(tasks)) return null;
 
   /*
-    Save in state a boolean value for each day,
+    NOTES on archivedDays:
+
+    This array contains a boolean value for each day,
     representing whether items from this day have
     already been archived for this particular week.
 

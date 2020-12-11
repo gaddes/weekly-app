@@ -130,6 +130,24 @@ const addToArchive = items => (dispatch, getState) => {
     .catch(e => { console.error(e); });
 };
 
+const deleteFromArchive = item => (dispatch, getState) => {
+  const state = getState().tasks;
+
+  const archive = state.archive.map((priority, idx) => {
+    if (idx === item.priority) {
+      // Create new array without this specific task
+      return priority.filter(task => task.id !== item.id);
+    }
+    return priority;
+  });
+
+  tasks.setArchive(archive)
+    .then(() => {
+      dispatch(setArchive(archive));
+    })
+    .catch(e => { console.error(e); });
+};
+
 const saveArchivedDays = dayIdx => (dispatch, getState) => {
   const state = getState().tasks;
 
@@ -160,5 +178,6 @@ export default {
   toggleCompleted,
   fetchInitialState,
   addToArchive,
+  deleteFromArchive,
   saveArchivedDays,
 };
