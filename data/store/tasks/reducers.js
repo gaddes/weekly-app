@@ -16,11 +16,15 @@ export const taskSlice = createSlice({
     setCurrent: (state, action) => {
       state.current = action.payload;
     },
+
+    setArchive: (state, action) => {
+      state.archive = action.payload;
+    },
   },
 });
 
-// These actions will be re-exported from a separate 'actions' file;
-//  they should never be imported by a component directly from here.
-export const { setInitialState, setCurrent } = taskSlice.actions;
+// These actions can be re-exported (if required) from a separate 'actions' file,
+//  but they should never be imported by a component directly from here.
+export const { setInitialState, setCurrent, setArchive } = taskSlice.actions;
 
 export default taskSlice.reducer;

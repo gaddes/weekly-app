@@ -5,7 +5,7 @@ import { archive } from '../../mockData';
 
 // Actions taken from slice, to be re-exported by this file.
 // Components wishing to use the store actions should import from this file only.
-import { setInitialState, setCurrent } from './reducers';
+import { setInitialState, setCurrent, setArchive } from './reducers';
 
 // Thunks
 // The function below is called a thunk and allows us to perform async logic. It
@@ -87,13 +87,53 @@ const toggleCompleted = id => (dispatch, getState) => {
     .catch(e => { console.error(e); });
 };
 
+const addToArchive = items => (dispatch, getState) => {
+  const state = getState().tasks;
+
+  const low = items.filter(item => item.priority === 0);
+  const medium = items.filter(item => item.priority === 1);
+  const high = items.filter(item => item.priority === 2);
+
+  const prioritisedTasks = [low, medium, high];
+
+  // Add each newly-prioritised task to its respective priority
+  //  within the existing archive
+  const archive = state.archive.map((priority, idx) => {
+    return [...priority, ...prioritisedTasks[idx]];
+  });
+
+  tasks.setArchive(archive)
+    .then(() => {
+      dispatch(setArchive(archive));
+    })
+    .catch(e => { console.error(e); });
+};
+
+/**
+ * Delete all current tasks from a particular day
+ *
+ * @param {number} dayIdx - integer representing day for which tasks should be deleted
+ */
+const deleteAllTasks = dayIdx => (dispatch, getState) => {
+  const state = getState().tasks;
+
+  const current = state.current.map((day, idx) => {
+    if (idx === dayIdx) return [];
+    return day;
+  });
+
+  tasks.setCurrent(current)
+    .then(() => {
+      dispatch(setCurrent(current));
+    })
+    .catch(e => { console.error(e); });
+};
+
 export default {
-  // Actions
-  setInitialState,
-  setCurrent,
-  // Thunks
   addTask,
   deleteTask,
   toggleCompleted,
   fetchInitialState,
+  addToArchive,
+  deleteAllTasks,
 };
