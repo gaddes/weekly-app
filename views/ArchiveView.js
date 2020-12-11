@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import tasksModel from '../data/store/tasks';
 import { priorities } from '../helpers';
-import { ArchiveItems, Priority } from '../components';
+import { ArchiveItems, Priority, Editor } from '../components';
 import { Text } from '../components/common';
 
 export default function ArchiveView() {
   const { selectArchiveTasks } = tasksModel.selectors;
   const tasks = useSelector(selectArchiveTasks);
 
+  // This object will hold data for task currently being edited
+  const [editedTask, setEditedTask] = useState(null);
+
   // TODO: add loading spinner and/or "no archive tasks" screen
   if (!tasks) return null;
+
+  if (editedTask) return (
+    <Editor
+      editedTask={editedTask}
+      setEditedTask={setEditedTask}
+    />
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -32,7 +42,11 @@ export default function ArchiveView() {
             priority={priorities[idx]}
             items={items}
           />
-          <ArchiveItems items={items} />
+
+          <ArchiveItems
+            items={items}
+            setEditedTask={setEditedTask}
+          />
         </View>
       ))}
     </ScrollView>

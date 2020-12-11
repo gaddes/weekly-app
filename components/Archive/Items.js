@@ -7,7 +7,8 @@ export default function ArchiveItems(props) {
   return props.items.map(task => (
     <Item
       key={task.id}
-      title={task.title}
+      task={task}
+      setEditedTask={props.setEditedTask}
     />
   ));
 }
