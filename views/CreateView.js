@@ -5,7 +5,7 @@ import { Create } from '../components';
 
 export default function CreateView() {
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
       <Create />
     </ScrollView>
   );

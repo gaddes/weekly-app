@@ -1,17 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 
 import { priorities } from '../../helpers';
 import { Text } from '../common';
 
-export default function Priority({ setValue }) {
-  const [active, setActive] = useState();
-
-  const handlePress = (key, value) => {
-    setValue(key, value);
-    setActive(value);
-  };
-
+export default function Priority({ activePriority, setActivePriority }) {
   return (
     <View>
       <Text>Priority</Text>
@@ -20,9 +13,9 @@ export default function Priority({ setValue }) {
         style={[
           styles.button,
           // Apply active styles if current 'active' value relates to this button
-          active === 0 && styles.buttonActive
+          activePriority === 0 && styles.buttonActive
         ]}
-        onPress={() => handlePress('priority', 0)}
+        onPress={() => setActivePriority(0)}
       >
         <Text style={styles.priority}>
           {priorities[0]}
@@ -32,9 +25,9 @@ export default function Priority({ setValue }) {
       <TouchableOpacity
         style={[
           styles.button,
-          active === 1 && styles.buttonActive
+          activePriority === 1 && styles.buttonActive
         ]}
-        onPress={() => handlePress('priority', 1)}
+        onPress={() => setActivePriority(1)}
       >
         <Text style={styles.priority}>
           {priorities[1]}
@@ -44,9 +37,9 @@ export default function Priority({ setValue }) {
       <TouchableOpacity
         style={[
           styles.button,
-          active === 2 && styles.buttonActive
+          activePriority === 2 && styles.buttonActive
         ]}
-        onPress={() => handlePress('priority', 2)}
+        onPress={() => setActivePriority(2)}
       >
         <Text style={styles.priority}>
           {priorities[2]}

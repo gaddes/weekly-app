@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { StyleSheet, View, Button, Alert } from 'react-native';
-import { useForm } from 'react-hook-form';
 import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
 
@@ -10,46 +9,59 @@ import { Text, TextInput } from '../common';
 
 import Days from './Days';
 import Priority from './Priority';
+import Success from './Success';
 
 export default function Create() {
-  const { saveTask } = tasksModel.actions;
+  const { addTask } = tasksModel.actions;
   const dispatch = useDispatch();
-  const { register, handleSubmit, setValue } = useForm();
 
-  useEffect(() => {
-    register('title');
-    register('description');
-    register('day');
-    register('priority');
-  }, [register]);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [day, setDay] = useState(null);
+  const [priority, setPriority] = useState(null);
+
+  const [success, setSuccess] = useState(false);
+
+  const resetValues = () => {
+    setTitle('');
+    setDescription('');
+    setDay(null);
+    setPriority(null);
+  };
 
   // Helper to determine if newly-created task has all required fields.
   // Returns true if any of the "invalid" conditions are met.
-  const taskIsInvalid = data =>
-    isNil(data.title) ||
-    isEmpty(data.title) ||
-    isNil(data.day) ||
-    isNil(data.priority);
+  const taskIsInvalid = () =>
+    isNil(title) ||
+    isEmpty(title) ||
+    isNil(day) ||
+    isNil(priority);
 
-  const onSubmit = data => {
-    if (taskIsInvalid(data)) {
+  const submit = () => {
+    if (taskIsInvalid()) {
       Alert.alert(
         'Error',
         'Please enter all required fields',
       );
       return;
     }
-    dispatch(saveTask(data));
+
+    const data = { title, description, day, priority };
+
+    dispatch(addTask(data));
+    setSuccess(true);
+    resetValues();
   };
+
+  if (success) { return <Success setSuccess={setSuccess} />; }
 
   return (
     <View style={styles.container}>
       <Text>Title</Text>
       <TextInput
         style={styles.input}
-        onChangeText={text => {
-          setValue('title', text);
-        }}
+        value={title}
+        onChangeText={text => setTitle(text)}
       />
 
       <Text>Description (optional)</Text>
@@ -57,21 +69,26 @@ export default function Create() {
         style={[styles.input, styles.multiline]}
         multiline
         numberOfLines={4} // This seems to have no effect...
-        onChangeText={text => {
-          setValue('description', text);
-        }}
+        value={description}
+        onChangeText={text => setDescription(text)}
       />
 
-      <Days setValue={setValue} />
+      <Days
+        activeDay={day}
+        setActiveDay={setDay}
+      />
 
-      <Priority setValue={setValue} />
+      <Priority
+        activePriority={priority}
+        setActivePriority={setPriority}
+      />
 
       <Button
         title="Create"
-        onPress={handleSubmit(onSubmit)}
+        onPress={submit}
       />
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
