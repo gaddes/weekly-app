@@ -1,10 +1,11 @@
 import React from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView, View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import tasksModel from '../data/store/tasks';
 import { priorities } from '../helpers';
 import { ArchiveItems, Priority } from '../components';
+import { Text } from '../components/common';
 
 export default function ArchiveView() {
   const { selectArchiveTasks } = tasksModel.selectors;
@@ -14,9 +15,19 @@ export default function ArchiveView() {
   if (!tasks) return null;
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.title}>
+        Archive
+      </Text>
+
+      <View style={styles.line} />
+
+      <Text style={styles.subtitle}>
+        This view shows uncompleted tasks from last week
+      </Text>
+
       {tasks.map((items, idx) => (
-        <View key={idx}>
+        <View key={idx} style={styles.task}>
           <Priority
             priority={priorities[idx]}
             items={items}
@@ -27,3 +38,44 @@ export default function ArchiveView() {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+
+    marginVertical: 24,
+    marginHorizontal: 24,
+  },
+
+  line: {
+    height: 3,
+    width: '90%',
+    backgroundColor: 'black',
+    marginVertical: 16,
+  },
+
+  title: {
+    fontSize: 32,
+  },
+
+  subtitle: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+
+  task: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+});

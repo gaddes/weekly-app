@@ -8,7 +8,7 @@ export default function ArchiveItems(props) {
 
   return (
     props.items.map(task => (
-      <View key={task.id}>
+      <View key={task.id} style={styles.container}>
         <Text style={styles.title}>
           {task.title}
         </Text>
@@ -18,6 +18,10 @@ export default function ArchiveItems(props) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    alignSelf: 'flex-start',
+  },
+
   title: {
     fontSize: 20,
   },

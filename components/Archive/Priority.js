@@ -8,7 +8,7 @@ export default function Priority(props) {
 
   return (
     <Text style={styles.text}>
-      {props.priority}
+      {props.priority + ' priority'}
     </Text>
   );
 }
