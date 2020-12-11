@@ -1,7 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { tasks } from '../../api';
-import { archive } from '../../mockData';
 
 // Actions taken from slice, to be re-exported by this file.
 // Components wishing to use the store actions should import from this file only.
@@ -14,8 +13,7 @@ import { setInitialState, setCurrent, setArchive } from './reducers';
 // code can then be executed and other actions can be dispatched
 const fetchInitialState = () => async dispatch => {
   const current = await tasks.getCurrent();
-  // TODO: fetch REAL data from core data
-  const archiveTest = await tasks.getArchive();
+  const archive = await tasks.getArchive();
 
   dispatch(setInitialState({ current, archive }));
 };
