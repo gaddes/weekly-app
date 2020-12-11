@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
@@ -6,53 +6,19 @@ import isEmpty from 'lodash/isEmpty';
 import tasksModel from '../data/store/tasks';
 import { days } from '../helpers';
 import { CurrentItems, Day } from '../components';
-
-const initialArchivedDays = [
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-  false,
-];
+import { useDayIndices } from '../hooks';
 
 export default function CurrentView() {
-  const { addToArchive, deleteAllTasks } = tasksModel.actions;
-  const { selectCurrentTasks } = tasksModel.selectors;
+  const { addToArchive, saveArchivedDays, deleteAllTasks } = tasksModel.actions;
+  const { selectCurrentTasks, selectArchivedDays } = tasksModel.selectors;
   const tasks = useSelector(selectCurrentTasks);
+  const archivedDays = useSelector(selectArchivedDays);
   const dispatch = useDispatch();
 
-  // TODO: move this and all associated logic into state/core data
-  const archivedDays = useRef(initialArchivedDays);
+  const { currentDayIdx, previousDayIdx } = useDayIndices();
 
   // TODO: add loading spinner and/or "no current tasks" screen
   if (isEmpty(tasks)) return null;
-
-  /**
-   * Arrays to help convert an index 0-6 representing Sun-Sat
-   * into one from 0-6 representing Mon-Sun.
-   */
-  const currentDayIndices = [6, 0, 1, 2, 3, 4, 5];
-  const previousDayIndices = [5, 6, 0, 1, 2, 3, 4];
-
-  // TODO: move this to a custom (global) hook!
-  /**
-   * Date.prototype.getDay() returns Sun-Sat as 0-6, so we must
-   * convert it to a normal-person week, where the first day is Monday.
-   *
-   * @returns {{previousDayIdx: number, currentDayIdx: number}} - "corrected" integers from 0-6 representing Mon-Sun
-   */
-  const getIndices = () => {
-    const date = new Date();
-    const idx = date.getDay(); // Integer from 0-6 representing Sun-Sat
-    return {
-      currentDayIdx: currentDayIndices[idx],
-      previousDayIdx: previousDayIndices[idx],
-    };
-  };
-
-  const { currentDayIdx, previousDayIdx } = getIndices();
 
   /*
     Save in state a boolean value for each day,
@@ -73,7 +39,7 @@ export default function CurrentView() {
    */
 
   // If the previous day has NOT been archived, do it now
-  if (!archivedDays.current[previousDayIdx]) {
+  if (!archivedDays[previousDayIdx]) {
     // Get incomplete tasks from previous day
     const incompleteTasks = tasks[previousDayIdx]
       .filter(task => !task.completed);
@@ -83,12 +49,12 @@ export default function CurrentView() {
     // Delete all tasks from previous day
     dispatch(deleteAllTasks(previousDayIdx));
     // Set flag in state so we don't archive twice
-    archivedDays.current[previousDayIdx] = true;
+    dispatch(saveArchivedDays(previousDayIdx));
   }
 
   // If we're on the first day of the week, set all archived flags to FALSE
   if (currentDayIdx === 0) {
-    archivedDays.current = initialArchivedDays;
+    dispatch(saveArchivedDays(null));
   }
 
   return (

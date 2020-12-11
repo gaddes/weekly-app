@@ -1,11 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
+import isNumber from 'lodash/isNumber';
 
 import { tasks } from '../../api';
-import { archive } from '../../mockData';
+import { initialArchivedDays } from '../../../helpers';
 
 // Actions taken from slice, to be re-exported by this file.
 // Components wishing to use the store actions should import from this file only.
-import { setInitialState, setCurrent, setArchive } from './reducers';
+import { setInitialState, setCurrent, setArchive, setArchivedDays } from './reducers';
 
 // Thunks
 // The function below is called a thunk and allows us to perform async logic. It
@@ -14,10 +15,10 @@ import { setInitialState, setCurrent, setArchive } from './reducers';
 // code can then be executed and other actions can be dispatched
 const fetchInitialState = () => async dispatch => {
   const current = await tasks.getCurrent();
-  // TODO: fetch REAL data from core data
-  const archiveTest = await tasks.getArchive();
+  const archive = await tasks.getArchive();
+  const archivedDays = await tasks.getArchivedDays();
 
-  dispatch(setInitialState({ current, archive }));
+  dispatch(setInitialState({ current, archive, archivedDays }));
 };
 
 const addTask = item => (dispatch, getState) => {
@@ -68,6 +69,26 @@ const deleteTask = id => (dispatch, getState) => {
     .catch(e => { console.error(e); });
 };
 
+/**
+ * Delete all current tasks from a particular day
+ *
+ * @param {number} dayIdx - integer representing day for which tasks should be deleted
+ */
+const deleteAllTasks = dayIdx => (dispatch, getState) => {
+  const state = getState().tasks;
+
+  const current = state.current.map((day, idx) => {
+    if (idx === dayIdx) return [];
+    return day;
+  });
+
+  tasks.setCurrent(current)
+    .then(() => {
+      dispatch(setCurrent(current));
+    })
+    .catch(e => { console.error(e); });
+};
+
 const toggleCompleted = id => (dispatch, getState) => {
   const state = getState().tasks;
 
@@ -109,22 +130,25 @@ const addToArchive = items => (dispatch, getState) => {
     .catch(e => { console.error(e); });
 };
 
-/**
- * Delete all current tasks from a particular day
- *
- * @param {number} dayIdx - integer representing day for which tasks should be deleted
- */
-const deleteAllTasks = dayIdx => (dispatch, getState) => {
+const saveArchivedDays = dayIdx => (dispatch, getState) => {
   const state = getState().tasks;
 
-  const current = state.current.map((day, idx) => {
-    if (idx === dayIdx) return [];
-    return day;
-  });
+  /**
+   * IF param 'dayIdx' is a number, assign TRUE to the respective day (i.e. archived)
+   * ELSE reset days to initial state.
+   *
+   * This allows us to pass no param (or 'null') to reset days.
+   */
+  const days = isNumber(dayIdx)
+    ? state.archivedDays.map((day, idx) => {
+      if (idx === dayIdx) return true;
+      return day;
+    })
+    : initialArchivedDays;
 
-  tasks.setCurrent(current)
+  tasks.setArchivedDays(days)
     .then(() => {
-      dispatch(setCurrent(current));
+      dispatch(setArchivedDays(days));
     })
     .catch(e => { console.error(e); });
 };
@@ -132,8 +156,9 @@ const deleteAllTasks = dayIdx => (dispatch, getState) => {
 export default {
   addTask,
   deleteTask,
+  deleteAllTasks,
   toggleCompleted,
   fetchInitialState,
   addToArchive,
-  deleteAllTasks,
+  saveArchivedDays,
 };
