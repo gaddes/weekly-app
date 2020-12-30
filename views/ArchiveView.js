@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
+import flatten from 'lodash/flatten';
+import isEmpty from 'lodash/isEmpty';
 
 import tasksModel from '../data/store/tasks';
 import { priorities } from '../helpers';
@@ -10,12 +12,10 @@ import { Text } from '../components/common';
 export default function ArchiveView() {
   const { selectArchiveTasks } = tasksModel.selectors;
   const tasks = useSelector(selectArchiveTasks);
+  const tasksAreEmpty = isEmpty(flatten(tasks));
 
   // This object will hold data for task currently being edited
   const [editedTask, setEditedTask] = useState(null);
-
-  // TODO: add loading spinner and/or "no archive tasks" screen
-  if (!tasks) return null;
 
   if (editedTask) return (
     <Editor
@@ -33,8 +33,15 @@ export default function ArchiveView() {
       <View style={styles.line} />
 
       <Text style={styles.subtitle}>
-        This view shows uncompleted tasks from last week
+        This view shows uncompleted tasks from the previous week
       </Text>
+
+      {tasksAreEmpty && (
+        <>
+          <Text>Congratulations!</Text>
+          <Text style={styles.subtitle}>You have no uncompleted tasks</Text>
+        </>
+      )}
 
       {tasks.map((items, idx) => (
         <View key={idx} style={styles.task}>
