@@ -11,7 +11,11 @@ export default function Priorities(props) {
       <Text>Priority</Text>
 
       {priorities.map((priority, idx) => (
-        <Priority key={priority} idx={idx} {...props} />
+        <Priority
+          key={priority}
+          idx={idx}
+          priority={priority}
+          {...props} />
       ))}
     </View>
   );

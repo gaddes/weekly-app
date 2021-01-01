@@ -1,21 +1,20 @@
 import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
-import { priorities } from '../../helpers';
 import { Text } from '../common';
 
-export default function Priority({ activePriority, setActivePriority, idx }) {
+export default function Priority(props) {
   return (
     <TouchableOpacity
       style={[
         styles.button,
         // Apply active styles if current 'active' value relates to this button
-        activePriority === idx && styles.buttonActive
+        props.activePriority === props.idx && styles.buttonActive
       ]}
-      onPress={() => setActivePriority(idx)}
+      onPress={() => props.setActivePriority(props.idx)}
     >
       <Text style={styles.priority}>
-        {priorities[idx]}
+        {props.priority}
       </Text>
     </TouchableOpacity>
   );
