@@ -15,7 +15,8 @@ export default function Priorities(props) {
           key={priority}
           idx={idx}
           priority={priority}
-          {...props} />
+          {...props}
+        />
       ))}
     </View>
   );
