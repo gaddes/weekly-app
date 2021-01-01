@@ -1,70 +1,18 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 
 import { priorities } from '../../helpers';
 import { Text } from '../common';
+import Priority from './Priority';
 
-export default function Priorities({ activePriority, setActivePriority }) {
+export default function Priorities(props) {
   return (
     <View>
       <Text>Priority</Text>
 
-      <TouchableOpacity
-        style={[
-          styles.button,
-          // Apply active styles if current 'active' value relates to this button
-          activePriority === 0 && styles.buttonActive
-        ]}
-        onPress={() => setActivePriority(0)}
-      >
-        <Text style={styles.priority}>
-          {priorities[0]}
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[
-          styles.button,
-          activePriority === 1 && styles.buttonActive
-        ]}
-        onPress={() => setActivePriority(1)}
-      >
-        <Text style={styles.priority}>
-          {priorities[1]}
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[
-          styles.button,
-          activePriority === 2 && styles.buttonActive
-        ]}
-        onPress={() => setActivePriority(2)}
-      >
-        <Text style={styles.priority}>
-          {priorities[2]}
-        </Text>
-      </TouchableOpacity>
+      {priorities.map((priority, idx) => (
+        <Priority key={priority} idx={idx} {...props} />
+      ))}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: 'white',
-    marginVertical: 8,
-    marginHorizontal: 12,
-    padding: 16,
-    borderRadius: 6,
-    textAlign: 'center',
-  },
-
-  buttonActive: {
-    backgroundColor: 'lightgrey',
-  },
-
-  priority: {
-    fontSize: 20,
-    textAlign: 'center',
-  },
-});
