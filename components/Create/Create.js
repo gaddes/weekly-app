@@ -8,7 +8,7 @@ import tasksModel from '../../data/store/tasks';
 import { Text, TextInput } from '../common';
 
 import Days from './Days';
-import Priority from './Priority';
+import Priorities from './Priorities';
 import Success from './Success';
 
 export default function Create() {
@@ -78,7 +78,7 @@ export default function Create() {
         setActiveDay={setDay}
       />
 
-      <Priority
+      <Priorities
         activePriority={priority}
         setActivePriority={setPriority}
       />

@@ -4,7 +4,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { priorities } from '../../helpers';
 import { Text } from '../common';
 
-export default function Priority({ activePriority, setActivePriority }) {
+export default function Priorities({ activePriority, setActivePriority }) {
   return (
     <View>
       <Text>Priority</Text>
