@@ -19,7 +19,9 @@ export default function Title(props) {
       </Text>
 
       {/* Show icon when item contains a description */}
-      {props.description && (
+      {/* Provide double-exclamation to prevent react native error */}
+      {/* https://stackoverflow.com/questions/38327133/react-native-unexpected-view-type-nested-under-text-node */}
+      {!!props.description && (
         <Feather
           style={{ marginRight: 16 }}
           name="align-left"
