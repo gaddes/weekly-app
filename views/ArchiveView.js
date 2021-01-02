@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import tasksModel from '../data/store/tasks';
 import { priorities } from '../helpers';
 import { ArchiveItems, Priority, Editor } from '../components';
-import { Text } from '../components/common';
+import { Text, Title, Subtitle, HorizontalLine } from '../components/common';
 
 export default function ArchiveView() {
   const { selectArchiveTasks } = tasksModel.selectors;
@@ -26,20 +26,14 @@ export default function ArchiveView() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>
-        Archive
-      </Text>
-
-      <View style={styles.line} />
-
-      <Text style={styles.subtitle}>
-        This view shows uncompleted tasks from the previous week
-      </Text>
+      <Title>Archive</Title>
+      <HorizontalLine />
+      <Subtitle>This view shows uncompleted tasks from the previous week</Subtitle>
 
       {tasksAreEmpty && (
         <>
           <Text>Congratulations!</Text>
-          <Text style={styles.subtitle}>You have no uncompleted tasks</Text>
+          <Subtitle>You have no uncompleted tasks</Subtitle>
         </>
       )}
 
@@ -72,23 +66,6 @@ const styles = StyleSheet.create({
 
     marginVertical: 24,
     marginHorizontal: 24,
-  },
-
-  line: {
-    height: 3,
-    width: '90%',
-    backgroundColor: 'black',
-    marginVertical: 16,
-  },
-
-  title: {
-    fontSize: 32,
-  },
-
-  subtitle: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 16,
   },
 
   task: {
