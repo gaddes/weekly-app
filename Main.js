@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { enableScreens } from 'react-native-screens';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StatusBar } from 'expo-status-bar';
@@ -10,6 +11,11 @@ import { ArchiveView, CreateView, CurrentView } from './views';
 import { CreateIcon } from './components';
 
 const Tab = createBottomTabNavigator();
+
+// Optimize memory usage and performance (not really necessary
+//  for an app this small, but good practice anyway)
+//  https://reactnavigation.org/docs/react-native-screens/
+enableScreens();
 
 export default function Main() {
   const { fetchInitialState } = tasksModel.actions;
