@@ -1,3 +1,10 @@
+// Order of items must match "priorities" array declared in this file
+const colors = [
+  'green',
+  'orange',
+  'red',
+];
+
 const days = [
   'Monday',
   'Tuesday',
@@ -30,6 +37,7 @@ const initialArchivedDays = [
 ];
 
 export {
+  colors,
   days,
   priorities,
   initialCurrent,
