@@ -1,12 +1,15 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
 
 import { Create } from '../components';
+import { Title, HorizontalLine, PageContainer } from '../components/common';
 
 export default function CreateView() {
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <PageContainer>
+      <Title>Create</Title>
+      <HorizontalLine />
+
       <Create />
-    </ScrollView>
+    </PageContainer>
   );
 }

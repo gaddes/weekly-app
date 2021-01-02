@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 
@@ -7,6 +7,7 @@ import tasksModel from '../data/store/tasks';
 import { days } from '../helpers';
 import { CurrentItems, Day } from '../components';
 import { useDayIndices } from '../hooks';
+import { Title, HorizontalLine, PageContainer } from '../components/common';
 
 export default function CurrentView() {
   const { addToArchive, saveArchivedDays, deleteAllTasks } = tasksModel.actions;
@@ -60,9 +61,12 @@ export default function CurrentView() {
   }
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <PageContainer>
+      <Title>Tasks</Title>
+      <HorizontalLine />
+
       {tasks.map((items, idx) => (
-        <View key={idx}>
+        <View key={idx} style={styles.task}>
           <Day
             day={days[idx]}
             items={items}
@@ -70,34 +74,12 @@ export default function CurrentView() {
           <CurrentItems items={items} />
         </View>
       ))}
-    </ScrollView>
+    </PageContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 10,
-  },
-  greeting: {
-    color: '#888',
-    fontSize: 18,
-    marginHorizontal: 15,
-  },
-  button: {
-    backgroundColor: 'blue',
-    margin: 16,
-    padding: 16,
-    borderRadius: 6,
-  },
-  buttonText: {
-    fontSize: 20,
-    color: '#fff',
+  task: {
+    width: '100%',
   },
 });
