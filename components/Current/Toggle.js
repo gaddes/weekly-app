@@ -17,7 +17,7 @@ export default function Toggle(props) {
   return (
     <TouchableOpacity
       onPress={toggle}
-      style={[styles.button, { borderColor: colors[props.priority] }]}
+      style={styles(props).button}
     >
       {props.completed && (
         <Feather
@@ -30,12 +30,13 @@ export default function Toggle(props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = props => StyleSheet.create({
   button: {
     height: 48,
     width: 48,
     borderWidth: 2,
     borderStyle: 'solid',
+    borderColor: colors[props.priority],
     borderRadius: 24,
 
     display: 'flex',
