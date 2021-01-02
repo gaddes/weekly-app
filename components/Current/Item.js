@@ -20,6 +20,7 @@ export default function ListItem(props) {
 
         <Title
           title={props.title}
+          description={props.description}
           completed={props.completed}
           editing={editing}
           setEditing={setEditing}
