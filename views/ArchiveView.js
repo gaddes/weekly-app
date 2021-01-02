@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useSelector } from 'react-redux';
 import flatten from 'lodash/flatten';
 import isEmpty from 'lodash/isEmpty';
@@ -7,7 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import tasksModel from '../data/store/tasks';
 import { priorities } from '../helpers';
 import { ArchiveItems, Priority, Editor } from '../components';
-import { Text, Title, Subtitle, HorizontalLine } from '../components/common';
+import { Text, Title, Subtitle, HorizontalLine, PageContainer } from '../components/common';
 
 export default function ArchiveView() {
   const { selectArchiveTasks } = tasksModel.selectors;
@@ -25,7 +25,7 @@ export default function ArchiveView() {
   );
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <PageContainer>
       <Title>Archive</Title>
       <HorizontalLine />
       <Subtitle>This view shows uncompleted tasks from the previous week</Subtitle>
@@ -50,24 +50,11 @@ export default function ArchiveView() {
           />
         </View>
       ))}
-    </ScrollView>
+    </PageContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-
-    display: 'flex',
-    flexDirection: 'column',
-    flexWrap: 'nowrap',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-
-    marginVertical: 24,
-    marginHorizontal: 24,
-  },
-
   task: {
     width: '100%',
     display: 'flex',
