@@ -39,6 +39,10 @@ const styles = props => StyleSheet.create({
     borderColor: colors[props.priority],
     borderRadius: 24,
 
+    flexGrow: 0,
+    flexShrink: 0,
+    flexBasis: 'auto',
+
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'nowrap',
