@@ -34,7 +34,10 @@ export default function Title(props) {
 
 const styles = props => StyleSheet.create({
   title: {
-    display: 'inline',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     marginHorizontal: 16,
 
     flexGrow: 0,
