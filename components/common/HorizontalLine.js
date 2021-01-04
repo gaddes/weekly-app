@@ -10,7 +10,7 @@ export default function HorizontalLine() {
 const styles = StyleSheet.create({
   line: {
     height: 3,
-    width: '90%',
+    width: '80%',
     backgroundColor: 'black',
     marginVertical: 16,
   },

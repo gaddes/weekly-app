@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Button } from 'react-native';
-import { Text } from '../common';
+import { View, StyleSheet } from 'react-native';
+import { Text, Button } from '../common';
 
 export default function Success({ setSuccess }) {
   return (
@@ -9,7 +9,7 @@ export default function Success({ setSuccess }) {
 
       <View style={styles.button}>
         <Button
-          title="Add new task"
+          text="Add new task"
           onPress={() => setSuccess(false)}
         />
       </View>

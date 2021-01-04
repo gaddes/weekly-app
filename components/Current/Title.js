@@ -12,7 +12,7 @@ export default function Title(props) {
   return (
     <TouchableOpacity
       onPress={toggleEdit}
-      style={{ display: 'inline' }}
+      style={styles(props).title}
     >
       <Text style={styles(props).text}>
         {props.title}
@@ -23,7 +23,7 @@ export default function Title(props) {
       {/* https://stackoverflow.com/questions/38327133/react-native-unexpected-view-type-nested-under-text-node */}
       {!!props.description && (
         <Feather
-          style={{ marginRight: 16 }}
+          style={{ marginLeft: 12 }}
           name="align-left"
           size={18}
         />
@@ -33,9 +33,20 @@ export default function Title(props) {
 }
 
 const styles = props => StyleSheet.create({
+  title: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    marginHorizontal: 16,
+
+    flexGrow: 0,
+    flexShrink: 1,
+    flexBasis: '100%',
+  },
+
   text: {
     fontSize: 20,
-    marginHorizontal: 16,
     textDecorationLine: props.completed ? 'line-through' : 'none',
   },
 });

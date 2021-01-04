@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { StyleSheet, View, Button, Alert } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
 
 import tasksModel from '../../data/store/tasks';
-import { Text, TextInput } from '../common';
+import { Text, TextInput, Button } from '../common';
 
 import Days from './Days';
 import Priorities from './Priorities';
@@ -84,7 +84,7 @@ export default function Create() {
       />
 
       <Button
-        title="Create"
+        text="Create"
         onPress={submit}
       />
     </View>
@@ -94,6 +94,7 @@ export default function Create() {
 const styles = StyleSheet.create({
   container: {
     margin: 12,
+    paddingBottom: 32,
     alignSelf: 'stretch',
   },
 
