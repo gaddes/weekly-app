@@ -5,7 +5,8 @@ import { SwipeableRow } from '../common';
 import Toggle from './Toggle';
 import Title from './Title';
 import Description from './Description';
-import Delete from './Delete';
+// TODO: delete "Delete" component if not required, now that swipeable row has been implemented
+// import Delete from './Delete';
 
 export default function ListItem(props) {
   const [editing, setEditing] = useState(false);
@@ -28,10 +29,10 @@ export default function ListItem(props) {
             setEditing={setEditing}
           />
 
-          <Delete
-            id={props.id}
-            editing={editing}
-          />
+          {/*<Delete*/}
+          {/*  id={props.id}*/}
+          {/*  editing={editing}*/}
+          {/*/>*/}
         </View>
 
         <Description
