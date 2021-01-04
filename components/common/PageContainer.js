@@ -20,6 +20,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
     marginVertical: 24,
-    marginHorizontal: 24,
   },
 });

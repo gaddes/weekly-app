@@ -53,9 +53,8 @@ const styles = StyleSheet.create({
     // TODO: update this!
     // Hacky way to match the current (and very boring) background color
     backgroundColor: 'rgb(242, 242, 242)',
-    padding: 16,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
   },
 
   item: {
