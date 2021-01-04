@@ -1,18 +1,24 @@
-import React, { Component } from 'react';
+import React, { useRef } from 'react';
 import { Animated, StyleSheet, Text, View, I18nManager } from 'react-native';
-
 import { RectButton } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+import { useDispatch } from 'react-redux';
 
-export default class SwipeableRow extends Component {
-  renderLeftActions = (progress, dragX) => {
+import tasksModel from '../../data/store/tasks';
+
+export default function SwipeableRow(props) {
+  const rowRef = useRef();
+  const dispatch = useDispatch();
+  const { deleteTask } = tasksModel.actions;
+
+  const renderLeftActions = (progress, dragX) => {
     const trans = dragX.interpolate({
       inputRange: [0, 50, 100, 101],
       outputRange: [-20, 0, 0, 1],
     });
 
     return (
-      <RectButton style={styles.leftAction} onPress={this.close}>
+      <RectButton style={styles.leftAction} onPress={close}>
         <Animated.Text
           style={[
             styles.actionText
@@ -24,15 +30,21 @@ export default class SwipeableRow extends Component {
     );
   };
 
-  renderRightAction = (text, color, x, progress) => {
+  const renderRightAction = (text, color, x, progress) => {
     const trans = progress.interpolate({
       inputRange: [0, 1],
       outputRange: [x, 0],
     });
 
     const pressHandler = () => {
-      this.close();
-      alert(text);
+      close();
+
+      // TODO: Update this very hacky code
+      if (text === 'Delete') {
+        dispatch(deleteTask(props.id));
+      } else {
+        alert(text);
+      }
     };
 
     return (
@@ -46,36 +58,34 @@ export default class SwipeableRow extends Component {
     );
   };
 
-  renderRightActions = progress => (
-    <View style={{ width: 192, flexDirection: I18nManager.isRTL? 'row-reverse' : 'row' }}>
-      {this.renderRightAction('More', '#C8C7CD', 192, progress)}
-      {this.renderRightAction('Flag', '#ffab00', 128, progress)}
-      {this.renderRightAction('More', '#dd2c00', 64, progress)}
+  const renderRightActions = progress => (
+    <View style={{ width: 160, flexDirection: I18nManager.isRTL? 'row-reverse' : 'row' }}>
+      {renderRightAction('More', '#C8C7CD', 160, progress)}
+      {/*{renderRightAction('Flag', '#ffab00', 128, progress)}*/}
+      {renderRightAction('Delete', '#dd2c00', 80, progress)}
     </View>
   );
 
-  updateRef = ref => {
-    this._swipeableRow = ref;
+  const updateRef = ref => {
+    rowRef.current = ref;
   };
 
-  close = () => {
-    this._swipeableRow.close();
+  const close = () => {
+    rowRef.current.close();
   };
 
-  render() {
-    return (
-      <Swipeable
-        ref={this.updateRef}
-        friction={2}
-        leftThreshold={30}
-        rightThreshold={40}
-        renderLeftActions={this.renderLeftActions}
-        renderRightActions={this.renderRightActions}
-      >
-        {this.props.children}
-      </Swipeable>
-    );
-  }
+  return (
+    <Swipeable
+      ref={updateRef}
+      friction={2}
+      leftThreshold={30}
+      rightThreshold={40}
+      // renderLeftActions={renderLeftActions}
+      renderRightActions={renderRightActions}
+    >
+      {props.children}
+    </Swipeable>
+  );
 }
 
 const styles = StyleSheet.create({
