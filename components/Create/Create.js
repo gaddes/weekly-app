@@ -94,6 +94,7 @@ export default function Create() {
 const styles = StyleSheet.create({
   container: {
     margin: 12,
+    paddingBottom: 32,
     alignSelf: 'stretch',
   },
 
