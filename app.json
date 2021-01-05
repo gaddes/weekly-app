@@ -2,7 +2,7 @@
   "expo": {
     "name": "weekly",
     "slug": "weekly",
-    "version": "1.0.2",
+    "version": "0.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.arlodesign.weekly",
-      "buildNumber": "1.0.2"
+      "buildNumber": "0.0.3"
     },
     "android": {
       "package": "com.yourcompany.yourappname",

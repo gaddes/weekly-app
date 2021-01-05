@@ -51,12 +51,14 @@ export default function CurrentView({ navigation }) {
     const incompleteTasks = tasks[previousDayIdx]
       .filter(task => !task.completed);
 
-    // Copy incomplete tasks to archive
-    dispatch(addToArchive(incompleteTasks));
-    // Delete all tasks from previous day
-    dispatch(deleteAllTasks(previousDayIdx));
-    // Set flag in state so we don't archive twice
-    dispatch(saveArchivedDays(previousDayIdx));
+    if (incompleteTasks.length) {
+      // Copy incomplete tasks to archive
+      dispatch(addToArchive(incompleteTasks));
+      // Delete all tasks from previous day
+      dispatch(deleteAllTasks(previousDayIdx));
+      // Set flag in state so we don't archive twice
+      dispatch(saveArchivedDays(previousDayIdx));
+    }
   }
 
   // If we're on the first day of the week, set all archived flags to FALSE
