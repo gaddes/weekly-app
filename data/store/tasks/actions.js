@@ -58,8 +58,8 @@ const updateTask = item => (dispatch, getState) => {
   const { id, day, title, description, priority } = item;
   const state = getState().tasks;
 
-  const updatedTask = {
-    id,
+  const task = {
+    id: uuidv4(),
     title,
     description,
     completed: false,
@@ -69,15 +69,16 @@ const updateTask = item => (dispatch, getState) => {
 
   // Create copy of current state. This allows us to
   //  mutate it without causing errors in Redux.
-  const current = [...state.current];
+  let current = [...state.current];
 
-  // Update relevant day with updated task data
-  current[day] = current[day].map(task => {
-    if (task.id === id) {
-      return updatedTask;
-    }
-    return task;
-  });
+  // Add updated task to the specified day
+  current[day] = [...current[day], task];
+
+  // Remove old task (before it was updated)
+  current = current.map(day => (
+    // Filter out item with matching ID
+    day.filter(item => item.id !== id)
+  ));
 
   // Update ASYNC STORAGE
   tasks.setCurrent(current)
