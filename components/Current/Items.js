@@ -17,6 +17,7 @@ export default function CurrentItems(props) {
         description={task.description}
         completed={task.completed}
         priority={task.priority}
+        navigate={props.navigate}
       />
     ))
   );

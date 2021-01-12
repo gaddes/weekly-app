@@ -89,7 +89,10 @@ export default function CurrentView({ navigation }) {
             day={days[idx]}
             items={items}
           />
-          <CurrentItems items={items} />
+          <CurrentItems
+            items={items}
+            navigate={navigation.navigate}
+          />
         </View>
       ))}
     </PageContainer>

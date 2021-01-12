@@ -1,6 +1,6 @@
 import CreateIcon from './CreateIcon';
 import { CurrentItems, Day } from './Current';
-import { Create } from './Create';
+import { Create, Edit } from './Editor';
 import { ArchiveItems, Priority, Editor } from './Archive';
 
 export {
@@ -8,6 +8,7 @@ export {
   CurrentItems,
   Day,
   Create,
+  Edit,
   ArchiveItems,
   Priority,
   Editor,

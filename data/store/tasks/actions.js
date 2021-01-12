@@ -54,6 +54,40 @@ const addTask = item => (dispatch, getState) => {
     .catch(e => { console.error(e); });
 };
 
+const updateTask = item => (dispatch, getState) => {
+  const { id, day, title, description, priority } = item;
+  const state = getState().tasks;
+
+  const updatedTask = {
+    id,
+    title,
+    description,
+    completed: false,
+    priority,
+    dateCreated: Date.now(),
+  };
+
+  // Create copy of current state. This allows us to
+  //  mutate it without causing errors in Redux.
+  const current = [...state.current];
+
+  // Update relevant day with updated task data
+  current[day] = current[day].map(task => {
+    if (task.id === id) {
+      return updatedTask;
+    }
+    return task;
+  });
+
+  // Update ASYNC STORAGE
+  tasks.setCurrent(current)
+    .then(() => {
+      // Update REDUX STATE
+      dispatch(setCurrent(current));
+    })
+    .catch(e => { console.error(e); });
+};
+
 const deleteTask = id => (dispatch, getState) => {
   const state = getState().tasks;
 
@@ -173,6 +207,7 @@ const saveArchivedDays = dayIdx => (dispatch, getState) => {
 
 export default {
   addTask,
+  updateTask,
   deleteTask,
   deleteAllTasks,
   toggleCompleted,

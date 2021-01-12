@@ -12,7 +12,10 @@ export default function ListItem(props) {
   const [editing, setEditing] = useState(false);
 
   return (
-    <SwipeableRow id={props.id}>
+    <SwipeableRow
+      id={props.id}
+      navigate={props.navigate}
+    >
       <View style={styles.container}>
         <View style={styles.item}>
           <Toggle

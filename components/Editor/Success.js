@@ -5,7 +5,7 @@ import { Text, Button } from '../common';
 export default function Success({ setSuccess }) {
   return (
     <View style={styles.container}>
-      <Text>Task created!</Text>
+      <Text>Task saved!</Text>
 
       <View style={styles.button}>
         <Button
