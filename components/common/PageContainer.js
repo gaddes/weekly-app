@@ -1,9 +1,12 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
+import Header from './Header';
+
 export default function PageContainer(props) {
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Header title={props.title} />
       {props.children}
     </ScrollView>
   );
@@ -19,6 +22,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
 
-    marginVertical: 24,
+    marginBottom: 24,
   },
 });

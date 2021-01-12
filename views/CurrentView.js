@@ -67,10 +67,7 @@ export default function CurrentView({ navigation }) {
   }
 
   return (
-    <PageContainer>
-      <Title>Tasks</Title>
-      <HorizontalLine />
-
+    <PageContainer title="Tasks">
       {tasksAreEmpty && (
         <>
           <Text>Congratulations</Text>
