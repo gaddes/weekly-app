@@ -39,7 +39,7 @@ export default function EditorView({ navigation, route }) {
   const Component = task ? Edit : Create;
 
   return (
-    <PageContainer>
+    <PageContainer title="Editor">
       <Component task={task} />
     </PageContainer>
   );

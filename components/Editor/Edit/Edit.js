@@ -56,49 +56,44 @@ export default function Edit(props) {
   if (success) return <Success setSuccess={setSuccess} />;
 
   return (
-    <>
-      <Title>Edit</Title>
-      <HorizontalLine />
+    <View style={styles.container}>
+      <Text>Title</Text>
+      <TextInput
+        style={styles.input}
+        value={title}
+        onChangeText={text => setTitle(text)}
+      />
 
-      <View style={styles.container}>
-        <Text>Title</Text>
-        <TextInput
-          style={styles.input}
-          value={title}
-          onChangeText={text => setTitle(text)}
-        />
+      <Text>Description (optional)</Text>
+      <TextInput
+        style={[styles.input, styles.multiline]}
+        multiline
+        numberOfLines={4} // This seems to have no effect...
+        value={description}
+        onChangeText={text => setDescription(text)}
+      />
 
-        <Text>Description (optional)</Text>
-        <TextInput
-          style={[styles.input, styles.multiline]}
-          multiline
-          numberOfLines={4} // This seems to have no effect...
-          value={description}
-          onChangeText={text => setDescription(text)}
-        />
+      <Days
+        activeDay={day}
+        setActiveDay={setDay}
+      />
 
-        <Days
-          activeDay={day}
-          setActiveDay={setDay}
-        />
+      <Priorities
+        activePriority={priority}
+        setActivePriority={setPriority}
+      />
 
-        <Priorities
-          activePriority={priority}
-          setActivePriority={setPriority}
-        />
-
-        <Button
-          text="Update"
-          onPress={submit}
-        />
-      </View>
-    </>
+      <Button
+        text="Update"
+        onPress={submit}
+      />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    margin: 12,
+    marginHorizontal: 12,
     paddingBottom: 32,
     alignSelf: 'stretch',
   },

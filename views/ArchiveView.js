@@ -25,9 +25,7 @@ export default function ArchiveView() {
   );
 
   return (
-    <PageContainer>
-      <Title>Archive</Title>
-      <HorizontalLine />
+    <PageContainer title="Archive">
       <Subtitle>This view shows uncompleted tasks from the previous week</Subtitle>
 
       {tasksAreEmpty && (
