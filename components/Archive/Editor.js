@@ -6,7 +6,7 @@ import isNil from 'lodash/isNil';
 import tasksModel from '../../data/store/tasks';
 import { Text, Button } from '../common';
 // TODO: place this component in common folder?
-import Days from '../Create/Days';
+import Days from '../Editor/Days';
 
 export default function Editor(props) {
   const { addTask, deleteFromArchive } = tasksModel.actions;

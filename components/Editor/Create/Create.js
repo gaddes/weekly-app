@@ -4,12 +4,12 @@ import { StyleSheet, View, Alert } from 'react-native';
 import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
 
-import tasksModel from '../../data/store/tasks';
-import { Text, TextInput, Button } from '../common';
+import tasksModel from '../../../data/store/tasks';
+import { Text, TextInput, Button, Title, HorizontalLine } from '../../common';
 
-import Days from './Days';
-import Priorities from './Priorities';
-import Success from './Success';
+import Days from '../Days';
+import Priorities from '../Priorities';
+import Success from '../Success';
 
 export default function Create() {
   const { addTask } = tasksModel.actions;
@@ -56,38 +56,43 @@ export default function Create() {
   if (success) return <Success setSuccess={setSuccess} />;
 
   return (
-    <View style={styles.container}>
-      <Text>Title</Text>
-      <TextInput
-        style={styles.input}
-        value={title}
-        onChangeText={text => setTitle(text)}
-      />
+    <>
+      <Title>Create</Title>
+      <HorizontalLine />
 
-      <Text>Description (optional)</Text>
-      <TextInput
-        style={[styles.input, styles.multiline]}
-        multiline
-        numberOfLines={4} // This seems to have no effect...
-        value={description}
-        onChangeText={text => setDescription(text)}
-      />
+      <View style={styles.container}>
+        <Text>Title</Text>
+        <TextInput
+          style={styles.input}
+          value={title}
+          onChangeText={text => setTitle(text)}
+        />
 
-      <Days
-        activeDay={day}
-        setActiveDay={setDay}
-      />
+        <Text>Description (optional)</Text>
+        <TextInput
+          style={[styles.input, styles.multiline]}
+          multiline
+          numberOfLines={4} // This seems to have no effect...
+          value={description}
+          onChangeText={text => setDescription(text)}
+        />
 
-      <Priorities
-        activePriority={priority}
-        setActivePriority={setPriority}
-      />
+        <Days
+          activeDay={day}
+          setActiveDay={setDay}
+        />
 
-      <Button
-        text="Create"
-        onPress={submit}
-      />
-    </View>
+        <Priorities
+          activePriority={priority}
+          setActivePriority={setPriority}
+        />
+
+        <Button
+          text="Create"
+          onPress={submit}
+        />
+      </View>
+    </>
   );
 }
 

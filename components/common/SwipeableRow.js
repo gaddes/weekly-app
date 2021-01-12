@@ -11,39 +11,20 @@ export default function SwipeableRow(props) {
   const dispatch = useDispatch();
   const { deleteTask } = tasksModel.actions;
 
-  const renderLeftActions = (progress, dragX) => {
-    const trans = dragX.interpolate({
-      inputRange: [0, 50, 100, 101],
-      outputRange: [-20, 0, 0, 1],
-    });
-
-    return (
-      <RectButton style={styles.leftAction} onPress={close}>
-        <Animated.Text
-          style={[
-            styles.actionText
-          ]}
-        >
-          Archive
-        </Animated.Text>
-      </RectButton>
-    );
-  };
-
-  const renderRightAction = (text, color, x, progress) => {
-    const trans = progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [x, 0],
-    });
-
+  const renderRightAction = (text, color) => {
     const pressHandler = () => {
       close();
 
-      // TODO: Update this very hacky code
-      if (text === 'Delete') {
-        dispatch(deleteTask(props.id));
-      } else {
-        alert(text);
+      switch (text) {
+        case 'Edit':
+          // Navigate to EDIT screen with ID param
+          props.navigate('New', { id: props.id });
+          break;
+        case 'Delete':
+          dispatch(deleteTask(props.id));
+          break;
+        default:
+          alert(text);
       }
     };
 
@@ -58,11 +39,10 @@ export default function SwipeableRow(props) {
     );
   };
 
-  const renderRightActions = progress => (
+  const renderRightActions = () => (
     <View style={{ width: 160, flexDirection: I18nManager.isRTL? 'row-reverse' : 'row' }}>
-      {renderRightAction('More', '#C8C7CD', 160, progress)}
-      {/*{renderRightAction('Flag', '#ffab00', 128, progress)}*/}
-      {renderRightAction('Delete', '#dd2c00', 80, progress)}
+      {renderRightAction('Edit', '#C8C7CD')}
+      {renderRightAction('Delete', '#dd2c00')}
     </View>
   );
 
@@ -80,7 +60,6 @@ export default function SwipeableRow(props) {
       friction={2}
       leftThreshold={30}
       rightThreshold={40}
-      // renderLeftActions={renderLeftActions}
       renderRightActions={renderRightActions}
     >
       {props.children}
@@ -89,11 +68,6 @@ export default function SwipeableRow(props) {
 }
 
 const styles = StyleSheet.create({
-  leftAction: {
-    flex: 1,
-    backgroundColor: '#497AFC',
-    justifyContent: 'center',
-  },
   actionText: {
     color: 'white',
     fontSize: 16,

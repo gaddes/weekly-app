@@ -1,9 +1,9 @@
 import CurrentView from './CurrentView';
 import ArchiveView from './ArchiveView';
-import CreateView from './CreateView';
+import EditorView from './EditorView';
 
 export {
   CurrentView,
   ArchiveView,
-  CreateView,
+  EditorView,
 };
