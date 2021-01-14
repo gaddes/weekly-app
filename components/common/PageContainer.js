@@ -5,10 +5,12 @@ import Header from './Header';
 
 export default function PageContainer(props) {
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <>
       <Header title={props.title} />
-      {props.children}
-    </ScrollView>
+      <ScrollView contentContainerStyle={styles.container}>
+        {props.children}
+      </ScrollView>
+    </>
   );
 }
 
