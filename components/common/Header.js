@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
+
+import { Upgrade } from '../Upgrade';
 
 const handlePress = () => {
   Alert.alert(
@@ -9,9 +11,11 @@ const handlePress = () => {
 };
 
 export default function Header(props) {
+  const [upgradeVisible, setUpgradeVisible] = useState(false);
+
   return (
     <View style={styles.header}>
-      <TouchableOpacity onPress={handlePress}>
+      <TouchableOpacity onPress={() => setUpgradeVisible(true)}>
         <Feather
           style={{ marginLeft: 12 }}
           name="arrow-up-circle"
@@ -30,6 +34,11 @@ export default function Header(props) {
           size={22}
         />
       </TouchableOpacity>
+
+      <Upgrade
+        visible={upgradeVisible}
+        setVisible={setUpgradeVisible}
+      />
     </View>
   );
 }
