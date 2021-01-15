@@ -3,6 +3,12 @@ import { View, Modal, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'r
 
 import UpgradeButton from './UpgradeButton';
 
+// Map to convert package duration into a more readable string
+const packageTypeMap = {
+  MONTHLY: 'month',
+  ANNUAL: 'year',
+};
+
 export default function Upgrade(props) {
   return (
     <Modal
@@ -19,31 +25,33 @@ export default function Upgrade(props) {
         </View>
 
         <View style={styles.content}>
-          <View style={styles.iap}>
-            <Text style={styles.description}>
-              Full access to all pro features
-            </Text>
+          {/* TODO: convert this to component*/}
+          {props.products.map(iap => {
+            const { title, description, currency_code, price_string } = iap.product;
+            const duration = packageTypeMap[iap.packageType];
 
-            <UpgradeButton onPress={() => {}}>
-              <Text style={styles.buttonText}>
-                {/* TODO: get this value from RevenueCat */}
-                $1.29 per month
-              </Text>
-            </UpgradeButton>
-          </View>
+            return (
+              <View
+                key={title}
+                style={styles.iapWrapper}
+              >
+                <Text style={styles.iapTitle}>
+                  {title}
+                </Text>
 
-          <View style={styles.iap}>
-            <Text style={styles.description}>
-              Full access to all pro features - save annually!
-            </Text>
+                <Text style={styles.iapDescription}>
+                  {description}
+                </Text>
 
-            <UpgradeButton onPress={() => {}}>
-              <Text style={styles.buttonText}>
-                {/* TODO: get this value from RevenueCat */}
-                $9.99 per year
-              </Text>
-            </UpgradeButton>
-          </View>
+                {/* TODO: allow user to purchase on click */}
+                <UpgradeButton onPress={() => {}}>
+                  <Text style={styles.buttonText}>
+                    {currency_code} {price_string} per {duration}
+                  </Text>
+                </UpgradeButton>
+              </View>
+            );
+          })}
         </View>
       </SafeAreaView>
     </Modal>
@@ -77,7 +85,7 @@ const styles = StyleSheet.create({
     padding: 12,
   },
 
-  iap: {
+  iapWrapper: {
     margin: 24,
     display: 'flex',
     flexDirection: 'column',
@@ -85,7 +93,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  description: {
+  iapTitle: {
+    fontSize: 20,
+    marginBottom: 8,
+  },
+
+  iapDescription: {
     textAlign: 'center',
     marginBottom: 12,
   },

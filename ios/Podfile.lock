@@ -105,6 +105,11 @@ PODS:
   - OpenSSL-Universal (1.0.2.20):
     - OpenSSL-Universal/Static (= 1.0.2.20)
   - OpenSSL-Universal/Static (1.0.2.20)
+  - Purchases (3.9.2):
+    - PurchasesCoreSwift (= 3.9.2)
+  - PurchasesCoreSwift (3.9.2)
+  - PurchasesHybridCommon (1.5.0):
+    - Purchases (= 3.9.2)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
     - FBLazyVector (= 0.63.4)
@@ -341,6 +346,9 @@ PODS:
     - React
   - RNGestureHandler (1.7.0):
     - React
+  - RNPurchases (4.0.0):
+    - PurchasesHybridCommon (= 1.5.0)
+    - React-Core
   - RNReanimated (1.13.1):
     - React
   - RNScreens (2.10.1):
@@ -430,6 +438,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNPurchases (from `../node_modules/react-native-purchases`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
@@ -460,6 +469,9 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - OpenSSL-Universal
+    - Purchases
+    - PurchasesCoreSwift
+    - PurchasesHybridCommon
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -547,6 +559,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/masked-view"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNPurchases:
+    :path: "../node_modules/react-native-purchases"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -609,6 +623,9 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   OpenSSL-Universal: ff34003318d5e1163e9529b08470708e389ffcdd
+  Purchases: d8a798c9c7552fe66b550bf314a143e94ffa70c8
+  PurchasesCoreSwift: ea4eabae180416e580ac60366f41aa1fefec0693
+  PurchasesHybridCommon: d9bfb34309db4c9ba82a6f7f3a6275c13befdca7
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -634,6 +651,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 05bae7ecfab1cbd5441993f1ca098f7c3b3f8d0e
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
+  RNPurchases: b0f86f23b23cf238a2dd9bb174b1c9f0aa91f499
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: b748efec66e095134c7166ca333b628cd7e6f3e2
   UMAppLoader: 5db5dc03176c6238da9c8b3657a370137882a4ad
@@ -652,6 +670,6 @@ SPEC CHECKSUMS:
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 44b50b641e150fd55d33fb422a13acff8ba4cc03
+PODFILE CHECKSUM: d7c06b9bb0fb77c1c98b8d8dcc90b96f8714d06b
 
 COCOAPODS: 1.10.1
