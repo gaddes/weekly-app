@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Modal, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Modal, Text, TouchableOpacity, StyleSheet, SafeAreaView, Alert } from 'react-native';
+import Purchases from 'react-native-purchases';
+import isEmpty from 'lodash/isEmpty';
 
 import UpgradeButton from './UpgradeButton';
 
@@ -8,6 +10,25 @@ const packageTypeMap = {
   MONTHLY: 'month',
   ANNUAL: 'year',
 };
+
+const handlePurchase = async iap => {
+  try {
+    // TODO: test whether we need purchaserInfo and what exactly we do
+    //  with it in the following IF statement...
+    const { purchaserInfo } = await Purchases.purchasePackage(iap);
+
+    if (!isEmpty(purchaserInfo.entitlements.active.pro)) {
+      // TODO: Unlock that great "pro" content (set pro in global store!)
+    }
+  } catch (e) {
+    if (!e.userCancelled) {
+      Alert.alert(
+        'Error',
+        'Please try again',
+      );
+    }
+  }
+}
 
 export default function Upgrade(props) {
   return (
@@ -43,8 +64,7 @@ export default function Upgrade(props) {
                   {description}
                 </Text>
 
-                {/* TODO: allow user to purchase on click */}
-                <UpgradeButton onPress={() => {}}>
+                <UpgradeButton onPress={() => handlePurchase(iap)}>
                   <Text style={styles.buttonText}>
                     {currency_code} {price_string} per {duration}
                   </Text>

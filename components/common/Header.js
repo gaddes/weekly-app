@@ -16,6 +16,8 @@ const handlePress = () => {
 export default function Header(props) {
   const [upgradeVisible, setUpgradeVisible] = useState(false);
   const [products, setProducts] = useState([]);
+  // TODO: this should be saved in global store
+  const [isPro, setIsPro] = useState(false);
 
   const handlePressUpgrade = async () => {
     try {
@@ -25,6 +27,12 @@ export default function Header(props) {
         // Show error message and return early if offerings can't be retrieved
         Alert.alert('Upgrade options could not be retrieved');
         return;
+      }
+
+      const purchaserInfo = await Purchases.getPurchaserInfo();
+
+      if (!isEmpty(purchaserInfo.entitlements.active.pro)) {
+        setIsPro(true);
       }
 
       // Set products in state so modal has access to them
@@ -46,6 +54,9 @@ export default function Header(props) {
           size={22}
         />
       </TouchableOpacity>
+
+      {/* TODO: create "pro" banner component */}
+      {isPro && <Text>pro! 🎉</Text>}
 
       <Text style={styles.title}>
         {props.title}
