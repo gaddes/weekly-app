@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 import tasksModel from './data/store/tasks';
+import userModel from './data/store/user';
 import { ArchiveView, EditorView, CurrentView } from './views';
 import { CreateIcon } from './components';
 
@@ -19,10 +20,12 @@ enableScreens();
 
 export default function Main() {
   const { fetchInitialState } = tasksModel.actions;
+  const { fetchSubscription } = userModel.actions;
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchInitialState());
+    dispatch(fetchSubscription());
   }, []);
 
   return (

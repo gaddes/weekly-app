@@ -8,7 +8,7 @@ import tasksModel from '../data/store/tasks';
 import { days } from '../helpers';
 import { CurrentItems, Day } from '../components';
 import { useDayIndices } from '../hooks';
-import { Text, Title, Subtitle, HorizontalLine, PageContainer, Button } from '../components/common';
+import { Text, Subtitle, PageContainer, Button } from '../components/common';
 
 export default function CurrentView({ navigation }) {
   const { addToArchive, saveArchivedDays, deleteAllTasks } = tasksModel.actions;
