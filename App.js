@@ -10,10 +10,8 @@ import { store } from './data/store';
 
 export default function App() {
   // Configure purchases once, on app first load
-  useEffect(() => {
-    Purchases.setDebugLogsEnabled(true);
-    Purchases.setup('ZvbtbeGMyhvgaVdtIfEgqwokXGQBppba');
-  }, []);
+  Purchases.setDebugLogsEnabled(true);
+  Purchases.setup('ZvbtbeGMyhvgaVdtIfEgqwokXGQBppba');
 
   return (
     <Provider store={store}>

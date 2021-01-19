@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { View, Modal, Text, TouchableOpacity, StyleSheet, SafeAreaView, Alert } from 'react-native';
 import Purchases from 'react-native-purchases';
 import isEmpty from 'lodash/isEmpty';
 
+import userModel from '../../data/store/user';
 import UpgradeButton from './UpgradeButton';
+import isNil from 'lodash/isNil';
 
 // Map to convert package duration into a more readable string
 const packageTypeMap = {
@@ -11,26 +14,49 @@ const packageTypeMap = {
   ANNUAL: 'year',
 };
 
-const handlePurchase = async iap => {
+const getOfferings = async () => {
   try {
-    // TODO: test whether we need purchaserInfo and what exactly we do
-    //  with it in the following IF statement...
-    const { purchaserInfo } = await Purchases.purchasePackage(iap);
-
-    if (!isEmpty(purchaserInfo.entitlements.active.pro)) {
-      // TODO: Unlock that great "pro" content (set pro in global store!)
+    const offerings = await Purchases.getOfferings();
+    if (isNil(offerings.current) || isEmpty(offerings.current.availablePackages)) {
+      // Show error message and return early if offerings can't be retrieved
+      Alert.alert('Upgrade options could not be retrieved');
+      return;
     }
+    return offerings.current.availablePackages;
   } catch (e) {
-    if (!e.userCancelled) {
-      Alert.alert(
-        'Error',
-        'Please try again',
-      );
-    }
+    console.error(e);
   }
-}
+};
+
 
 export default function Upgrade(props) {
+  const dispatch = useDispatch();
+  const { fetchSubscription } = userModel.actions;
+  const { selectIsPro } = userModel.selectors;
+
+  const isPro = useSelector(selectIsPro);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    getOfferings().then(data => setProducts(data));
+  }, []);
+
+  const handlePurchase = async iap => {
+    try {
+      const { purchaserInfo } = await Purchases.purchasePackage(iap);
+      if (!isEmpty(purchaserInfo.entitlements.active.pro)) {
+        dispatch(fetchSubscription()); // Set subscription status in global store
+      }
+    } catch (e) {
+      if (!e.userCancelled) {
+        Alert.alert(
+          'Error',
+          'Please try again',
+        );
+      }
+    }
+  }
+
   return (
     <Modal
       visible={props.visible}
@@ -46,8 +72,13 @@ export default function Upgrade(props) {
         </View>
 
         <View style={styles.content}>
+          {/* TODO: show different type of modal without upgrade options */}
+          {/*  e.g. "You already have the Pro subscription!" */}
+          {/*  "To view or make changes, please visit your App Store account" */}
+          {isPro && <Text>you're already pro!</Text>}
+
           {/* TODO: convert this to component*/}
-          {props.products.map(iap => {
+          {products.map(iap => {
             const { title, description, currency_code, price_string } = iap.product;
             const duration = packageTypeMap[iap.packageType];
 

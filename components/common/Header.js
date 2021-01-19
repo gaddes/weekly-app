@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import Purchases from 'react-native-purchases';
+import { useSelector } from 'react-redux';
 import Feather from '@expo/vector-icons/Feather';
-import isNil from 'lodash/isNil';
-import isEmpty from 'lodash/isEmpty';
 
 import { Upgrade } from '../Upgrade';
+import userModel from '../../data/store/user';
 
 const handlePress = () => {
   Alert.alert(
@@ -15,39 +14,13 @@ const handlePress = () => {
 
 export default function Header(props) {
   const [upgradeVisible, setUpgradeVisible] = useState(false);
-  const [products, setProducts] = useState([]);
-  // TODO: this should be saved in global store
-  const [isPro, setIsPro] = useState(false);
 
-  const handlePressUpgrade = async () => {
-    try {
-      const offerings = await Purchases.getOfferings();
-
-      if (isNil(offerings.current) || isEmpty(offerings.current.availablePackages)) {
-        // Show error message and return early if offerings can't be retrieved
-        Alert.alert('Upgrade options could not be retrieved');
-        return;
-      }
-
-      const purchaserInfo = await Purchases.getPurchaserInfo();
-
-      if (!isEmpty(purchaserInfo.entitlements.active.pro)) {
-        setIsPro(true);
-      }
-
-      // Set products in state so modal has access to them
-      setProducts(offerings.current.availablePackages);
-
-      // Show modal
-      setUpgradeVisible(true);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const { selectIsPro } = userModel.selectors;
+  const isPro = useSelector(selectIsPro);
 
   return (
     <View style={styles.header}>
-      <TouchableOpacity onPress={handlePressUpgrade}>
+      <TouchableOpacity onPress={() => setUpgradeVisible(true)}>
         <Feather
           style={{ marginLeft: 12 }}
           name="arrow-up-circle"
@@ -73,7 +46,6 @@ export default function Header(props) {
       <Upgrade
         visible={upgradeVisible}
         setVisible={setUpgradeVisible}
-        products={products}
       />
     </View>
   );
