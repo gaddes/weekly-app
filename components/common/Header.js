@@ -19,25 +19,39 @@ export default function Header(props) {
   const isPro = useSelector(selectIsPro);
 
   return (
-    <View style={styles.header}>
-      <TouchableOpacity onPress={() => setUpgradeVisible(true)}>
+    <View
+      style={[
+        styles.header,
+        { paddingVertical: isPro ? 4 : 14 },
+      ]}
+    >
+      <TouchableOpacity
+        style={styles.upgradeIcon}
+        onPress={() => setUpgradeVisible(true)}
+      >
         <Feather
-          style={{ marginLeft: 12 }}
+          style={{
+            color: isPro ? 'darkgoldenrod' : 'black',
+            marginTop: isPro ? 10 : 0,
+          }}
           name="arrow-up-circle"
           size={22}
         />
-      </TouchableOpacity>
 
-      {/* TODO: create "pro" banner component */}
-      {isPro && <Text>pro! 🎉</Text>}
+        {isPro && (
+          <Text style={styles.proText}>pro</Text>
+        )}
+      </TouchableOpacity>
 
       <Text style={styles.title}>
         {props.title}
       </Text>
 
-      <TouchableOpacity onPress={handlePress}>
+      <TouchableOpacity
+        style={styles.settingsIcon}
+        onPress={handlePress}
+      >
         <Feather
-          style={{ marginRight: 12 }}
           name="settings"
           size={22}
         />
@@ -60,15 +74,32 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
 
-    paddingVertical: 12,
     paddingHorizontal: 12,
     marginBottom: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
     backgroundColor: 'white',
   },
 
+  upgradeIcon: {
+    marginLeft: 12,
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'nowrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+
+  settingsIcon: {
+    marginRight: 12,
+  },
+
+  proText: {
+    fontSize: 12,
+    color: 'darkgoldenrod',
+  },
+
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-  }
+  },
 });
