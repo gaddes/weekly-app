@@ -57,6 +57,18 @@ export default function FreeContent() {
 
   return (
     <View>
+      <View style={styles.textWrapper}>
+        <Text style={styles.text}>
+          Choose a subscription to gain access to pro features:
+        </Text>
+
+        <Text style={styles.bullets}>Add more than 7 tasks</Text>
+
+        <Text style={styles.text}>
+          Our future roadmap contains many exciting updates... we'll keep you posted!
+        </Text>
+      </View>
+
       {products.map(iap => {
         const { title, description, currency_code, price_string } = iap.product;
         const duration = packageTypeMap[iap.packageType];
@@ -87,6 +99,25 @@ export default function FreeContent() {
 }
 
 const styles = StyleSheet.create({
+  textWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+
+  text: {
+    width: '100%',
+    textAlign: 'center',
+    fontSize: 16,
+    marginVertical: 12,
+  },
+
+  bullets: {
+    fontWeight: 'bold',
+  },
+
   iapWrapper: {
     margin: 24,
     display: 'flex',

@@ -21,7 +21,6 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 12,
   },
 
   text: {
