@@ -46,7 +46,7 @@ const addTask = item => (dispatch, getState) => {
     : [task];
 
   // Update ASYNC STORAGE
-  tasks.setCurrent(current)
+  return tasks.setCurrent(current)
     .then(() => {
       // Update REDUX STATE
       dispatch(setCurrent(current));
@@ -81,7 +81,7 @@ const updateTask = item => (dispatch, getState) => {
   ));
 
   // Update ASYNC STORAGE
-  tasks.setCurrent(current)
+  return tasks.setCurrent(current)
     .then(() => {
       // Update REDUX STATE
       dispatch(setCurrent(current));
@@ -97,7 +97,7 @@ const deleteTask = id => (dispatch, getState) => {
     day.filter(item => item.id !== id)
   ));
 
-  tasks.setCurrent(current)
+  return tasks.setCurrent(current)
     .then(() => {
       dispatch(setCurrent(current));
     })
@@ -117,7 +117,7 @@ const deleteAllTasks = dayIdx => (dispatch, getState) => {
     return day;
   });
 
-  tasks.setCurrent(current)
+  return tasks.setCurrent(current)
     .then(() => {
       dispatch(setCurrent(current));
     })
@@ -136,7 +136,7 @@ const toggleCompleted = id => (dispatch, getState) => {
     });
   });
 
-  tasks.setCurrent(current)
+  return tasks.setCurrent(current)
     .then(() => {
       dispatch(setCurrent(current));
     })
@@ -158,7 +158,7 @@ const addToArchive = items => (dispatch, getState) => {
     return [...priority, ...prioritisedTasks[idx]];
   });
 
-  tasks.setArchive(archive)
+  return tasks.setArchive(archive)
     .then(() => {
       dispatch(setArchive(archive));
     })
@@ -176,7 +176,7 @@ const deleteFromArchive = item => (dispatch, getState) => {
     return priority;
   });
 
-  tasks.setArchive(archive)
+  return tasks.setArchive(archive)
     .then(() => {
       dispatch(setArchive(archive));
     })
@@ -199,7 +199,7 @@ const saveArchivedDays = dayIdx => (dispatch, getState) => {
     })
     : initialArchivedDays;
 
-  tasks.setArchivedDays(days)
+  return tasks.setArchivedDays(days)
     .then(() => {
       dispatch(setArchivedDays(days));
     })
