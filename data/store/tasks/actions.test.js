@@ -13,10 +13,11 @@ const initialState = {
 };
 
 describe('actions', () => {
-  it('saveArchivedDays sets all flags to false when dayIdx === null', async () => {
+  // TODO: keeping this here only for reference when next test is written
+  xit('saveArchivedDays sets all flags to false when dayIdx === null', async () => {
     const store = mockStore(initialState);
 
-    await store.dispatch(actions.saveArchivedDays(null));
+    // await store.dispatch(actions.saveArchivedDays(null));
 
     expect(store.getActions()).toEqual([{
       payload: [ false, false, false, false, false, false, false ],

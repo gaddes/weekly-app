@@ -1,12 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
-import isNumber from 'lodash/isNumber';
 
 import { tasks } from '../../api';
-import { initialArchivedDays } from '../../../helpers';
 
 // Actions taken from slice, to be re-exported by this file.
 // Components wishing to use the store actions should import from this file only.
-import { setInitialState, setCurrent, setArchive, setArchivedDays } from './reducers';
+import { setInitialState, setCurrent, setArchive } from './reducers';
 
 // Thunks
 // The function below is called a thunk and allows us to perform async logic. It
@@ -16,9 +14,8 @@ import { setInitialState, setCurrent, setArchive, setArchivedDays } from './redu
 const fetchInitialState = () => async dispatch => {
   const current = await tasks.getCurrent();
   const archive = await tasks.getArchive();
-  const archivedDays = await tasks.getArchivedDays();
 
-  dispatch(setInitialState({ current, archive, archivedDays }));
+  dispatch(setInitialState({ current, archive }));
 };
 
 const addTask = item => (dispatch, getState) => {
@@ -117,6 +114,7 @@ const deleteTask = id => (dispatch, getState) => {
 };
 
 /**
+ * TODO: not currently used but keeping as may be useful in future
  * Delete all current tasks from a particular day
  *
  * @param {number} dayIdx - integer representing day for which tasks should be deleted
@@ -195,37 +193,39 @@ const deleteFromArchive = item => (dispatch, getState) => {
     .catch(e => { console.error(e); });
 };
 
-const saveArchivedDays = dayIdx => (dispatch, getState) => {
+const moveUncompletedTasksToArchive = currentDayIdx => (dispatch, getState) => {
   const state = getState().tasks;
+  const incompleteTasks = [];
 
-  /**
-   * IF param 'dayIdx' is a number, assign TRUE to the respective day (i.e. archived)
-   * ELSE reset days to initial state.
-   *
-   * This allows us to pass no param (or 'null') to reset days.
-   */
-  const days = isNumber(dayIdx)
-    ? state.archivedDays.map((day, idx) => {
-      if (idx === dayIdx) return true;
-      return day;
-    })
-    : initialArchivedDays;
+  // Get all incomplete tasks from previous days, EXCLUDING any
+  //  that are flagged to next week or have already been completed.
+  state.current.forEach((day, dayIdx) => {
+    day.forEach(task => {
+      const shouldBeArchived = !task.completed && !task.nextWeek && dayIdx < currentDayIdx;
+      if (shouldBeArchived) {
+        incompleteTasks.push(task);
+      }
+    });
+  });
 
-  return tasks.setArchivedDays(days)
-    .then(() => {
-      dispatch(setArchivedDays(days));
+  if (incompleteTasks.length) {
+    // Copy incomplete tasks to archive
+    dispatch(addToArchive(incompleteTasks));
+
+    // Remove incomplete tasks from current week
+    incompleteTasks.forEach(task => {
+      dispatch(deleteTask(task.id));
     })
-    .catch(e => { console.error(e); });
+  }
 };
 
 export default {
   addTask,
   updateTask,
   deleteTask,
-  deleteAllTasks,
   toggleCompleted,
   fetchInitialState,
   addToArchive,
   deleteFromArchive,
-  saveArchivedDays,
+  moveUncompletedTasksToArchive,
 };

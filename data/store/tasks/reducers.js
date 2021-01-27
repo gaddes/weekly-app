@@ -5,14 +5,12 @@ export const taskSlice = createSlice({
   initialState: {
     current: [],
     archive: [],
-    archivedDays: [],
   },
   reducers: {
     setInitialState: (state, action) => {
-      const { current, archive, archivedDays } = action.payload;
+      const { current, archive } = action.payload;
       state.current = current;
       state.archive = archive;
-      state.archivedDays = archivedDays;
     },
 
     setCurrent: (state, action) => {
@@ -22,15 +20,11 @@ export const taskSlice = createSlice({
     setArchive: (state, action) => {
       state.archive = action.payload;
     },
-
-    setArchivedDays: (state, action) => {
-      state.archivedDays = action.payload;
-    },
   },
 });
 
 // These actions can be re-exported (if required) from a separate 'actions' file,
 //  but they should never be imported by a component directly from here.
-export const { setInitialState, setCurrent, setArchive, setArchivedDays } = taskSlice.actions;
+export const { setInitialState, setCurrent, setArchive } = taskSlice.actions;
 
 export default taskSlice.reducer;

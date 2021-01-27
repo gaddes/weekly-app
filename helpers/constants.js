@@ -31,16 +31,10 @@ const initialArchive = [
   [], [], [],
 ];
 
-const initialArchivedDays = [
-  // TRUE if day has already been archived for the current week
-  false, false, false, false, false, false, false,
-];
-
 export {
   colors,
   days,
   priorities,
   initialCurrent,
   initialArchive,
-  initialArchivedDays,
 };
