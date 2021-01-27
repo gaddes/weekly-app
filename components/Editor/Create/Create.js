@@ -5,7 +5,8 @@ import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
 
 import tasksModel from '../../../data/store/tasks';
-import { Text, TextInput, Button, Title, HorizontalLine } from '../../common';
+import { Text, TextInput, Button } from '../../common';
+import { useDayIndices } from '../../../hooks';
 
 import Days from '../Days';
 import Priorities from '../Priorities';
@@ -14,6 +15,7 @@ import Success from '../Success';
 export default function Create() {
   const { addTask } = tasksModel.actions;
   const dispatch = useDispatch();
+  const { currentDayIdx } = useDayIndices();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -46,7 +48,7 @@ export default function Create() {
       return;
     }
 
-    const data = { title, description, day, priority };
+    const data = { title, description, day, priority, currentDayIdx };
 
     dispatch(addTask(data));
     setSuccess(true);

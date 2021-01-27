@@ -22,7 +22,7 @@ const fetchInitialState = () => async dispatch => {
 };
 
 const addTask = item => (dispatch, getState) => {
-  const { day, title, description, priority } = item;
+  const { day, title, description, priority, currentDayIdx } = item;
   const state = getState().tasks;
 
   const task = {
@@ -33,6 +33,14 @@ const addTask = item => (dispatch, getState) => {
     priority,
     dateCreated: Date.now(),
   };
+
+  if (day < currentDayIdx) {
+    // Example: if today is Wednesday and this task was added to Tuesday,
+    //  the user has most likely intended to add the task to NEXT week.
+    // This flag will enable us to show this in the UI and, more importantly,
+    //  we will only automatically delete tasks that are in the CURRENT week.
+    task.nextWeek = true;
+  }
 
   // Create copy of current state. This allows us to
   //  mutate it without causing errors in Redux.
@@ -55,7 +63,7 @@ const addTask = item => (dispatch, getState) => {
 };
 
 const updateTask = item => (dispatch, getState) => {
-  const { id, day, title, description, priority } = item;
+  const { id, day, title, description, priority, currentDayIdx } = item;
   const state = getState().tasks;
 
   const task = {
@@ -66,6 +74,10 @@ const updateTask = item => (dispatch, getState) => {
     priority,
     dateCreated: Date.now(),
   };
+
+  if (day < currentDayIdx) {
+    task.nextWeek = true; // Same logic as addTask action
+  }
 
   // Create copy of current state. This allows us to
   //  mutate it without causing errors in Redux.
