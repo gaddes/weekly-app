@@ -1,4 +1,4 @@
-// Order of items must match "priorities" array declared in this file
+// Order of colors must match "priorities" array declared in this file
 const colors = [
   'green',
   'orange',

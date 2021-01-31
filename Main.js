@@ -19,12 +19,13 @@ const Tab = createBottomTabNavigator();
 enableScreens();
 
 export default function Main() {
-  const { fetchInitialState } = tasksModel.actions;
-  const { fetchSubscription } = userModel.actions;
+  const { fetchInitialTasks } = tasksModel.actions;
+  const { fetchInitialUserData, fetchSubscription } = userModel.actions;
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(fetchInitialState());
+    dispatch(fetchInitialTasks());
+    dispatch(fetchInitialUserData());
     dispatch(fetchSubscription());
   }, []);
 

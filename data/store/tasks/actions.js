@@ -8,10 +8,10 @@ import { setInitialState, setCurrent, setArchive } from './reducers';
 
 // Thunks
 // The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(fetchInitialState())`. This
+// can be dispatched like a regular action: `dispatch(fetchInitialTasks())`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched
-const fetchInitialState = () => async dispatch => {
+const fetchInitialTasks = () => async dispatch => {
   const current = await tasks.getCurrent();
   const archive = await tasks.getArchive();
 
@@ -114,12 +114,33 @@ const deleteTask = id => (dispatch, getState) => {
 };
 
 /**
+ * Remove multiple tasks by ID
+ *
+ * @param {Array} ids - List of ids for tasks to be deleted
+ * @returns {function(*, *): Promise<void>}
+ */
+const deleteAllTasksById = ids => (dispatch, getState) => {
+  const state = getState().tasks;
+  const current = state.current.map(day => (
+    day.filter(task => (
+      !ids.includes(task.id)
+    ))
+  ));
+
+  return tasks.setCurrent(current)
+    .then(() => {
+      dispatch(setCurrent(current));
+    })
+    .catch(e => { console.error(e); });
+};
+
+/**
  * TODO: not currently used but keeping as may be useful in future
  * Delete all current tasks from a particular day
  *
  * @param {number} dayIdx - integer representing day for which tasks should be deleted
  */
-const deleteAllTasks = dayIdx => (dispatch, getState) => {
+const deleteAllTasksByDay = dayIdx => (dispatch, getState) => {
   const state = getState().tasks;
 
   const current = state.current.map((day, idx) => {
@@ -193,15 +214,46 @@ const deleteFromArchive = item => (dispatch, getState) => {
     .catch(e => { console.error(e); });
 };
 
-const moveUncompletedTasksToArchive = currentDayIdx => (dispatch, getState) => {
+/**
+ * Remove `nextWeek` flags from the specified number of days prior to the current day,
+ * then add incomplete tasks to the archive and remove them from the current week.
+ *
+ * @param currentDayIdx - integer representing the current day
+ * @param numDays - number of days since user last logged in
+ * @returns {function(*, *): Promise<void>}
+ */
+const archiveIncompleteTasks = (currentDayIdx, numDays) => async (dispatch, getState) => {
   const state = getState().tasks;
+
+  const allDays = [0, 1, 2, 3, 4, 5, 6]; // Mon, Tue ... Sun
+  const twoWeeksReversed = [6, 5, 4, 3, 2, 1, 0, 6, 5, 4, 3, 2, 1, 0];
+  const indexOfCurrentDay = twoWeeksReversed.indexOf(currentDayIdx);
   const incompleteTasks = [];
+
+  // IF number of days since last login equals one week or more, get ALL day indices,
+  // ELSE get day indices from numDays prior to currentDayIdx.
+  const daysToRemove = numDays > allDays.length - 1
+    ? allDays
+    // +1 to each param because by default, slice INCLUDES the start value and EXCLUDES the end value;
+    //  here we want to EXCLUDE the start value and INCLUDE the end value.
+    : twoWeeksReversed.slice(indexOfCurrentDay + 1, indexOfCurrentDay + 1 + numDays);
+
+  const currentTasks = state.current.map((day, idx) => {
+    // Return unmodified day if not included in list to be removed
+    if (!daysToRemove.includes(idx)) return day;
+
+    return day.map(originalTask => {
+      const task = { ...originalTask };
+      delete task.nextWeek;
+      return task;
+    });
+  });
 
   // Get all incomplete tasks from previous days, EXCLUDING any
   //  that are flagged to next week or have already been completed.
-  state.current.forEach((day, dayIdx) => {
+  currentTasks.forEach((day, dayIdx) => {
     day.forEach(task => {
-      const shouldBeArchived = !task.completed && !task.nextWeek && dayIdx < currentDayIdx;
+      const shouldBeArchived = !task.completed && !task.nextWeek && daysToRemove.includes(dayIdx);
       if (shouldBeArchived) {
         incompleteTasks.push(task);
       }
@@ -209,14 +261,18 @@ const moveUncompletedTasksToArchive = currentDayIdx => (dispatch, getState) => {
   });
 
   if (incompleteTasks.length) {
-    // Copy incomplete tasks to archive
-    dispatch(addToArchive(incompleteTasks));
+    // Create map of all incomplete task ids (to be deleted)
+    const incompleteIds = incompleteTasks.map(task => task.id);
 
-    // Remove incomplete tasks from current week
-    incompleteTasks.forEach(task => {
-      dispatch(deleteTask(task.id));
-    })
+    return await Promise.all([
+      // Copy incomplete tasks to archive
+      dispatch(addToArchive(incompleteTasks)),
+      // Remove incomplete tasks from current week
+      dispatch(deleteAllTasksById(incompleteIds)),
+    ]);
   }
+
+  return Promise.resolve('There are no uncompleted tasks');
 };
 
 export default {
@@ -224,8 +280,8 @@ export default {
   updateTask,
   deleteTask,
   toggleCompleted,
-  fetchInitialState,
+  fetchInitialTasks,
   addToArchive,
   deleteFromArchive,
-  moveUncompletedTasksToArchive,
+  archiveIncompleteTasks,
 };
