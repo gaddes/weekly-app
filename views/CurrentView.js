@@ -6,7 +6,6 @@ import flatten from 'lodash/flatten';
 
 import userModel from '../data/store/user';
 import tasksModel from '../data/store/tasks';
-import { days } from '../helpers';
 import { CurrentItems, Day } from '../components';
 import { useDayIndices, useDaysSinceLastLogin } from '../hooks';
 import { Text, Subtitle, PageContainer, Button } from '../components/common';
@@ -56,7 +55,7 @@ export default function CurrentView({ navigation }) {
       {tasks.map((items, idx) => (
         <View key={idx} style={styles.task}>
           <Day
-            day={days[idx]}
+            idx={idx}
             items={items}
           />
           <CurrentItems
