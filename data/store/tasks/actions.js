@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import uniq from 'lodash/uniq';
 
 import { tasks } from '../../api';
 
@@ -230,17 +231,37 @@ const archiveIncompleteTasks = (currentDayIdx, numDays) => async (dispatch, getS
   const indexOfCurrentDay = twoWeeksReversed.indexOf(currentDayIdx);
   const incompleteTasks = [];
 
-  // IF number of days since last login equals one week or more, get ALL day indices,
-  // ELSE get day indices from numDays prior to currentDayIdx.
-  const daysToRemove = numDays > allDays.length - 1
-    ? allDays
-    // +1 to each param because by default, slice INCLUDES the start value and EXCLUDES the end value;
-    //  here we want to EXCLUDE the start value and INCLUDE the end value.
-    : twoWeeksReversed.slice(indexOfCurrentDay + 1, indexOfCurrentDay + 1 + numDays);
+  // By default, Array.slice INCLUDES start value and EXCLUDES end value;
+  //  see comments on individual params explaining why we +1 to each.
+  const indicesOfDaysSinceLastLogin = twoWeeksReversed.slice(
+    indexOfCurrentDay + 1, // +1 to EXCLUDE idx for current day
+    indexOfCurrentDay + 1 + numDays, // +1 to INCLUDE idx for final day
+  );
 
+  // Add all days with idx greater than current day.
+  // Example: user logs in on Monday, so all idx > 0 are in the
+  //  current week, and should have their `nextWeek` label removed.
+  const indicesOfDaysEqualToOrGreaterThanCurrent = allDays.slice(
+    allDays.findIndex(idx => idx === currentDayIdx), // Start value (included)
+    allDays.length, // End value (is NOT included in returned array)
+  );
+
+  // Merge arrays and remove duplicates
+  const indicesOfDaysToRemoveNextWeekFlag = uniq([
+    ...indicesOfDaysSinceLastLogin,
+    ...indicesOfDaysEqualToOrGreaterThanCurrent,
+  ]);
+
+  // IF number of days since last login equals one week or more, get ALL day indices,
+  // ELSE get specific day indices.
+  const daysToArchive = numDays > allDays.length - 1
+    ? allDays
+    : indicesOfDaysSinceLastLogin;
+
+  // Remove `nextWeek` flag from days that are now in the current week
   const currentTasks = state.current.map((day, idx) => {
-    // Return unmodified day if not included in list to be removed
-    if (!daysToRemove.includes(idx)) return day;
+    // If flag should not be removed, return unmodified day
+    if (!indicesOfDaysToRemoveNextWeekFlag.includes(idx)) return day;
 
     return day.map(originalTask => {
       const task = { ...originalTask };
@@ -253,7 +274,7 @@ const archiveIncompleteTasks = (currentDayIdx, numDays) => async (dispatch, getS
   //  that are flagged to next week or have already been completed.
   currentTasks.forEach((day, dayIdx) => {
     day.forEach(task => {
-      const shouldBeArchived = !task.completed && !task.nextWeek && daysToRemove.includes(dayIdx);
+      const shouldBeArchived = !task.completed && !task.nextWeek && daysToArchive.includes(dayIdx);
       if (shouldBeArchived) {
         incompleteTasks.push(task);
       }

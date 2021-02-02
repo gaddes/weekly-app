@@ -22,11 +22,13 @@ export default function CurrentView({ navigation }) {
   const daysSinceLastLogin = useDaysSinceLastLogin();
 
   useEffect(() => {
-    // daysSinceLastLogin may be `undefined` on app first load,
-    //  before lastLogin has been retrieved from core data and set in state.
-    // tasksAreEmpty may be `true` for the same reason,
-    //  i.e. array of tasks is empty on first load.
-    if (!daysSinceLastLogin || tasksAreEmpty) return;
+    // Both `daysSinceLastLogin` and `tasks` may be `undefined` on app first load,
+    //  before values have been retrieved from core data and set in state.
+    if (daysSinceLastLogin === undefined || tasks === undefined) return;
+
+    if (daysSinceLastLogin === 0 || tasksAreEmpty) {
+      dispatch(saveLastLogin()); return;
+    }
 
     dispatch(archiveIncompleteTasks(currentDayIdx, daysSinceLastLogin))
       .then(dispatch(saveLastLogin()));
