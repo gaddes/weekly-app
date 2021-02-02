@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 export const taskSlice = createSlice({
   name: 'tasks',
   initialState: {
-    current: [],
-    archive: [],
+    current: undefined,
+    archive: undefined,
   },
   reducers: {
     setInitialState: (state, action) => {
