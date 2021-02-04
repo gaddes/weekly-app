@@ -37,16 +37,18 @@ export default function CurrentView({ navigation }) {
   };
 
   useEffect(() => {
-    // On first load (Note: this useEffect has no dependencies)
-    //  mimic app becoming active to trigger initial task archival.
-    handleAppStateChange('active');
-
     AppState.addEventListener('change', handleAppStateChange);
 
     return () => {
       AppState.removeEventListener('change', handleAppStateChange);
     };
   }, []);
+
+  useEffect(() => {
+    // On first load and any time a dependency changes,
+    //  mimic app becoming active to trigger task archival.
+    handleAppStateChange('active');
+  }, [daysSinceLastLogin, tasksAreEmpty]);
 
   // TODO: is the comment below correct?
   //  ...suspect logic in this file should be refactored for greater clarity
