@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { AppState, View, StyleSheet } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
 import flatten from 'lodash/flatten';
@@ -21,18 +21,32 @@ export default function CurrentView({ navigation }) {
   const { currentDayIdx } = useDayIndices();
   const daysSinceLastLogin = useDaysSinceLastLogin();
 
-  useEffect(() => {
-    // Both `daysSinceLastLogin` and `tasks` may be `undefined` on app first load,
-    //  before values have been retrieved from core data and set in state.
-    if (daysSinceLastLogin === undefined || tasks === undefined) return;
+  const handleAppStateChange = nextAppState => {
+    if (nextAppState === 'active') {
+      // Both `daysSinceLastLogin` and `tasks` may be `undefined` on app first load,
+      //  before values have been retrieved from core data and set in state.
+      if (daysSinceLastLogin === undefined || tasks === undefined) return;
 
-    if (daysSinceLastLogin === 0 || tasksAreEmpty) {
-      dispatch(saveLastLogin()); return;
+      if (daysSinceLastLogin === 0 || tasksAreEmpty) {
+        dispatch(saveLastLogin()); return;
+      }
+
+      dispatch(archiveIncompleteTasks(currentDayIdx, daysSinceLastLogin))
+        .then(dispatch(saveLastLogin()));
     }
+  };
 
-    dispatch(archiveIncompleteTasks(currentDayIdx, daysSinceLastLogin))
-      .then(dispatch(saveLastLogin()));
-  }, [daysSinceLastLogin, currentDayIdx, tasksAreEmpty]);
+  useEffect(() => {
+    // On first load (Note: this useEffect has no dependencies)
+    //  mimic app becoming active to trigger initial task archival.
+    handleAppStateChange('active');
+
+    AppState.addEventListener('change', handleAppStateChange);
+
+    return () => {
+      AppState.removeEventListener('change', handleAppStateChange);
+    };
+  }, []);
 
   // TODO: is the comment below correct?
   //  ...suspect logic in this file should be refactored for greater clarity
