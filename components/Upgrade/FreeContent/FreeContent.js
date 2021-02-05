@@ -94,6 +94,14 @@ export default function FreeContent() {
           </View>
         );
       })}
+
+      <Text style={styles.text}>
+        You'll also be supporting your friendly neighbourhood developer 🙆🏼‍♂️
+      </Text>
+
+      <Text style={styles.text}>
+        And remember, regardless of whether you go pro or stay free, we promise no ads... ever!
+      </Text>
     </View>
   );
 }

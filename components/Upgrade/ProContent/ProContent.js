@@ -7,6 +7,21 @@ export default function ProContent() {
       <Text style={styles.text}>
         Thanks for supporting us - you're a pro! 🎉
       </Text>
+
+      <Text style={styles.text}>
+        You now have access to these exclusive pro features:
+      </Text>
+
+      <Text style={styles.bullets}>Add more than 7 tasks</Text>
+
+      <Text style={styles.text}>
+        You'll also be supporting your friendly neighbourhood developer 🙆🏼‍♂️
+      </Text>
+
+      <Text style={styles.text}>
+        And remember, we promise no ads... ever!
+      </Text>
+
       <Text style={styles.text}>
         To view or make changes to your subscription, please visit your App Store account
       </Text>
