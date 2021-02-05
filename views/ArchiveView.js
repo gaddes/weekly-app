@@ -18,10 +18,12 @@ export default function ArchiveView() {
   const [editedTask, setEditedTask] = useState(null);
 
   if (editedTask) return (
-    <Editor
-      editedTask={editedTask}
-      setEditedTask={setEditedTask}
-    />
+    <PageContainer title="Editor">
+      <Editor
+        editedTask={editedTask}
+        setEditedTask={setEditedTask}
+      />
+    </PageContainer>
   );
 
   return (

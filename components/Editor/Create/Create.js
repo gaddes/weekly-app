@@ -1,21 +1,32 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StyleSheet, View, Alert } from 'react-native';
 import isNil from 'lodash/isNil';
 import isEmpty from 'lodash/isEmpty';
 
 import tasksModel from '../../../data/store/tasks';
-import { Text, TextInput, Button } from '../../common';
+import userModel from '../../../data/store/user';
+import { Text, TextInput, Button, alertTaskLimit } from '../../common';
 import { useDayIndices } from '../../../hooks';
+import { taskLimitFree, taskLimitPro } from '../../../helpers';
 
 import Days from '../Days';
 import Priorities from '../Priorities';
 import Success from '../Success';
 
 export default function Create() {
-  const { addTask } = tasksModel.actions;
   const dispatch = useDispatch();
   const { currentDayIdx } = useDayIndices();
+
+  const { addTask } = tasksModel.actions;
+  const { selectNumCurrentTasks } = tasksModel.selectors;
+  const numCurrentTasks = useSelector(selectNumCurrentTasks);
+
+  const { selectIsPro } = userModel.selectors;
+  const isPro = useSelector(selectIsPro);
+
+  const taskLimit = isPro ? taskLimitPro : taskLimitFree;
+  const exceededLimit = numCurrentTasks >= taskLimit;
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -40,12 +51,15 @@ export default function Create() {
     isNil(priority);
 
   const submit = () => {
+    if (exceededLimit) {
+      return alertTaskLimit();
+    }
+
     if (taskIsInvalid()) {
-      Alert.alert(
+      return Alert.alert(
         'Error',
         'Please enter all required fields',
       );
-      return;
     }
 
     const data = { title, description, day, priority, currentDayIdx };

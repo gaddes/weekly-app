@@ -31,10 +31,15 @@ const initialArchive = [
   [], [], [],
 ];
 
+const taskLimitFree = 7;
+const taskLimitPro = 9999;
+
 export {
   colors,
   days,
   priorities,
   initialCurrent,
   initialArchive,
+  taskLimitFree,
+  taskLimitPro,
 };

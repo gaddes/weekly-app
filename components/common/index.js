@@ -17,3 +17,5 @@ export {
   TextInput,
   Title,
 };
+
+export * from './alerts';

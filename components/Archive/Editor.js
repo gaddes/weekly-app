@@ -1,17 +1,30 @@
 import React, { useState } from 'react';
 import { ScrollView, View, StyleSheet, Alert } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import isNil from 'lodash/isNil';
 
 import tasksModel from '../../data/store/tasks';
-import { Text, Button } from '../common';
+import userModel from '../../data/store/user';
+import { Text, Button, alertTaskLimit } from '../common';
 // TODO: place this component in common folder?
 import Days from '../Editor/Days';
 
+import { taskLimitFree, taskLimitPro } from '../../helpers';
+
 export default function Editor(props) {
-  const { addTask, deleteFromArchive } = tasksModel.actions;
-  const [day, setDay] = useState(null);
   const dispatch = useDispatch();
+
+  const { addTask, deleteFromArchive } = tasksModel.actions;
+  const { selectNumCurrentTasks } = tasksModel.selectors;
+  const numCurrentTasks = useSelector(selectNumCurrentTasks);
+
+  const { selectIsPro } = userModel.selectors;
+  const isPro = useSelector(selectIsPro);
+
+  const taskLimit = isPro ? taskLimitPro : taskLimitFree;
+  const exceededLimit = numCurrentTasks >= taskLimit;
+
+  const [day, setDay] = useState(null);
 
   const taskData = { ...props.editedTask, day, };
 
@@ -20,6 +33,10 @@ export default function Editor(props) {
   const taskIsInvalid = () => isNil(day);
 
   const handleSave = () => {
+    if (exceededLimit) {
+      return alertTaskLimit();
+    }
+
     if (taskIsInvalid()) {
       Alert.alert(
         'Error',
@@ -37,13 +54,9 @@ export default function Editor(props) {
   };
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <Text style={styles.title}>
-        Editor
-      </Text>
-
+    <ScrollView style={styles.container} contentContainerStyle={{ flexGrow: 1 }}>
       <Text style={styles.subtitle}>
-        Which day would you like to add this to?
+        When will you do this?
       </Text>
 
       <Days
@@ -67,12 +80,13 @@ export default function Editor(props) {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 32,
+  container: {
+    width: '80%',
   },
 
   subtitle: {
     fontSize: 18,
+    textAlign: 'center',
   },
 
   buttonContainer: {
