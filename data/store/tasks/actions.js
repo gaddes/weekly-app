@@ -1,7 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import uniq from 'lodash/uniq';
+import flatten from 'lodash/flatten';
+import sortBy from 'lodash/sortBy';
+import reverse from 'lodash/reverse';
+import isEmpty from 'lodash/isEmpty';
 
 import { tasks } from '../../api';
+import { archiveLimitFree } from '../../../helpers';
 
 // Actions taken from slice, to be re-exported by this file.
 // Components wishing to use the store actions should import from this file only.
@@ -175,8 +180,31 @@ const toggleCompleted = id => (dispatch, getState) => {
     .catch(e => { console.error(e); });
 };
 
+// TODO: can this helper function be re-written and used directly within `addToArchive` action?
+//  or even better, can we extract this into a separate `helpers` sub-folder?
+const removeOldest = archive => {
+  // Sort by earliest > latest created
+  const chronologicalFlatTasks = sortBy(flatten(archive), 'dateCreated');
+
+  // Reverse array so is sorted by latest > earliest created
+  reverse(chronologicalFlatTasks);
+
+  // Remove tasks from archive so only `limit` number of tasks remain
+  const items = chronologicalFlatTasks.slice(0, archiveLimitFree);
+
+  // Reconstruct items into priority order
+  const low = items.filter(item => item.priority === 0);
+  const medium = items.filter(item => item.priority === 1);
+  const high = items.filter(item => item.priority === 2);
+
+  // Prioritised tasks (same structure as archive)
+  return [low, medium, high];
+};
+
 const addToArchive = items => (dispatch, getState) => {
   const state = getState().tasks;
+  const user = getState().user;
+  const isPro = !isEmpty(user.subscription);
 
   const low = items.filter(item => item.priority === 0);
   const medium = items.filter(item => item.priority === 1);
@@ -190,9 +218,12 @@ const addToArchive = items => (dispatch, getState) => {
     return [...priority, ...prioritisedTasks[idx]];
   });
 
-  return tasks.setArchive(archive)
+  // Limit number of tasks in archive for non-pro users
+  const newArchive = isPro ? archive : removeOldest(archive);
+
+  return tasks.setArchive(newArchive)
     .then(() => {
-      dispatch(setArchive(archive));
+      dispatch(setArchive(newArchive));
     })
     .catch(e => { console.error(e); });
 };
@@ -214,6 +245,44 @@ const deleteFromArchive = item => (dispatch, getState) => {
     })
     .catch(e => { console.error(e); });
 };
+
+// TODO: this has been re-written as a simple helper function above
+//  ...delete this action if no longer needed.
+// const deleteNumFromArchive = numTasks => (dispatch, getState) => {
+//   const stateTasks = getState().tasks;
+//   const user = getState().user;
+//   const isPro = !isEmpty(user.subscription);
+//
+//   if (isPro) return; // Don't delete from archive if user has pro subscription
+//
+//   const archive = [...stateTasks.archive];
+//   // Sort by earliest > latest created
+//   const chronologicalFlatTasks = sortBy(flatten(archive), 'dateCreated');
+//   // Reverse array so is sorted by latest > earliest created
+//   reverse(chronologicalFlatTasks);
+//
+//   const totalBeforeRemoval = numTasks + chronologicalFlatTasks.length;
+//
+//   if (totalBeforeRemoval > archiveLimitFree) {
+//     const numToRemove = totalBeforeRemoval - archiveLimitFree;
+//
+//     // Remove num (oldest) tasks from archive
+//     const items = chronologicalFlatTasks.slice(0, archive.length - numToRemove);
+//
+//     // Reconstruct items into priority order
+//     const low = items.filter(item => item.priority === 0);
+//     const medium = items.filter(item => item.priority === 1);
+//     const high = items.filter(item => item.priority === 2);
+//
+//     const prioritisedTasks = [low, medium, high];
+//
+//     return tasks.setArchive(prioritisedTasks)
+//       .then(() => {
+//         dispatch(setArchive(prioritisedTasks));
+//       })
+//       .catch(e => { console.error(e); });
+//   }
+// };
 
 /**
  * Remove `nextWeek` flags from the specified number of days prior to the current day,
@@ -302,7 +371,6 @@ export default {
   deleteTask,
   toggleCompleted,
   fetchInitialTasks,
-  addToArchive,
   deleteFromArchive,
   archiveIncompleteTasks,
 };
