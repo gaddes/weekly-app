@@ -36,7 +36,7 @@ export default function FreeContent() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    getOfferings().then(data => setProducts(data));
+    getOfferings().then(data => setProducts(data || []));
   }, []);
 
   const handlePurchase = async iap => {
@@ -94,6 +94,14 @@ export default function FreeContent() {
           </View>
         );
       })}
+
+      <Text style={styles.text}>
+        You'll also be supporting your friendly neighbourhood developer 🙆🏼‍♂️
+      </Text>
+
+      <Text style={styles.text}>
+        And remember, regardless of whether you go pro or stay free, we promise no ads... ever!
+      </Text>
     </View>
   );
 }
