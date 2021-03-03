@@ -23,8 +23,5 @@ export const taskSlice = createSlice({
   },
 });
 
-// These actions can be re-exported (if required) from a separate 'actions' file,
-//  but they should never be imported by a component directly from here.
 export const { setInitialState, setCurrent, setArchive } = taskSlice.actions;
-
 export default taskSlice.reducer;
