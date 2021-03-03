@@ -7,16 +7,33 @@ import isEmpty from 'lodash/isEmpty';
 
 import { tasks } from '../../api';
 import { archiveLimitFree } from '../../../helpers';
-
-// Actions taken from slice, to be re-exported by this file.
-// Components wishing to use the store actions should import from this file only.
 import { setInitialState, setCurrent, setArchive } from './reducers';
 
-// Thunks
-// The function below is called a thunk and allows us to perform async logic. It
-// can be dispatched like a regular action: `dispatch(fetchInitialTasks())`. This
-// will call the thunk with the `dispatch` function as the first argument. Async
-// code can then be executed and other actions can be dispatched
+
+const getCurrent = (getState) => {
+  const state = getState().tasks;
+  // Return copy of state, so it can be mutated without causing Redux errors
+  return [...state.current];
+};
+
+const saveCurrentTasks = (dispatch, updatedTasks) => (
+  tasks.setCurrent(updatedTasks) // Update ASYNC STORAGE
+    .then(() => dispatch(setCurrent(updatedTasks))) // Update REDUX STATE
+    .catch(e => console.error(e))
+);
+
+const saveArchiveTasks = (dispatch, updatedTasks) => (
+  tasks.setArchive(updatedTasks)
+    .then(() => dispatch(setArchive(updatedTasks)))
+    .catch(e => console.error(e))
+);
+
+
+/**
+ * Retrieve tasks from Core Data on first app load, then set in state
+ *
+ * @returns {function(*): Promise<void>}
+ */
 const fetchInitialTasks = () => async dispatch => {
   const current = await tasks.getCurrent();
   const archive = await tasks.getArchive();
@@ -24,9 +41,15 @@ const fetchInitialTasks = () => async dispatch => {
   dispatch(setInitialState({ current, archive }));
 };
 
+/**
+ * Add new item to current tasks
+ *
+ * @param {Object} item
+ * @returns {function(*, *): Promise<void>}
+ */
 const addTask = item => (dispatch, getState) => {
   const { day, title, description, priority, currentDayIdx } = item;
-  const state = getState().tasks;
+  const current = getCurrent(getState);
 
   const task = {
     id: uuidv4(),
@@ -45,29 +68,18 @@ const addTask = item => (dispatch, getState) => {
     task.nextWeek = true;
   }
 
-  // Create copy of current state. This allows us to
-  //  mutate it without causing errors in Redux.
-  const current = [...state.current];
-
-  // Update relevant day with new task data, or assign
-  //  directly to this day if no data currently exists,
-  //  e.g. on first app load
+  // Update relevant day with new task data, or assign directly to
+  //  this day if no data currently exists, e.g. on first app load
   current[day] = current[day]
     ? [...current[day], task]
     : [task];
 
-  // Update ASYNC STORAGE
-  return tasks.setCurrent(current)
-    .then(() => {
-      // Update REDUX STATE
-      dispatch(setCurrent(current));
-    })
-    .catch(e => { console.error(e); });
+  return saveCurrentTasks(dispatch, current);
 };
 
 const updateTask = item => (dispatch, getState) => {
   const { id, day, title, description, priority, currentDayIdx } = item;
-  const state = getState().tasks;
+  let current = getCurrent(getState);
 
   const task = {
     id: uuidv4(),
@@ -82,10 +94,6 @@ const updateTask = item => (dispatch, getState) => {
     task.nextWeek = true; // Same logic as addTask action
   }
 
-  // Create copy of current state. This allows us to
-  //  mutate it without causing errors in Redux.
-  let current = [...state.current];
-
   // Add updated task to the specified day
   current[day] = [...current[day], task];
 
@@ -95,13 +103,7 @@ const updateTask = item => (dispatch, getState) => {
     day.filter(item => item.id !== id)
   ));
 
-  // Update ASYNC STORAGE
-  return tasks.setCurrent(current)
-    .then(() => {
-      // Update REDUX STATE
-      dispatch(setCurrent(current));
-    })
-    .catch(e => { console.error(e); });
+  return saveCurrentTasks(dispatch, current);
 };
 
 const deleteTask = id => (dispatch, getState) => {
@@ -112,11 +114,7 @@ const deleteTask = id => (dispatch, getState) => {
     day.filter(item => item.id !== id)
   ));
 
-  return tasks.setCurrent(current)
-    .then(() => {
-      dispatch(setCurrent(current));
-    })
-    .catch(e => { console.error(e); });
+  return saveCurrentTasks(dispatch, current);
 };
 
 /**
@@ -126,18 +124,14 @@ const deleteTask = id => (dispatch, getState) => {
  * @returns {function(*, *): Promise<void>}
  */
 const deleteAllTasksById = ids => (dispatch, getState) => {
-  const state = getState().tasks;
-  const current = state.current.map(day => (
+  const current = getCurrent(getState);
+  const updatedCurrent = current.map(day => (
     day.filter(task => (
       !ids.includes(task.id)
     ))
   ));
 
-  return tasks.setCurrent(current)
-    .then(() => {
-      dispatch(setCurrent(current));
-    })
-    .catch(e => { console.error(e); });
+  return saveCurrentTasks(dispatch, updatedCurrent);
 };
 
 /**
@@ -147,24 +141,18 @@ const deleteAllTasksById = ids => (dispatch, getState) => {
  * @param {number} dayIdx - integer representing day for which tasks should be deleted
  */
 const deleteAllTasksByDay = dayIdx => (dispatch, getState) => {
-  const state = getState().tasks;
-
-  const current = state.current.map((day, idx) => {
+  const current = getCurrent(getState);
+  const updatedCurrent = current.map((day, idx) => {
     if (idx === dayIdx) return [];
     return day;
   });
 
-  return tasks.setCurrent(current)
-    .then(() => {
-      dispatch(setCurrent(current));
-    })
-    .catch(e => { console.error(e); });
+  return saveCurrentTasks(dispatch, updatedCurrent);
 };
 
 const toggleCompleted = id => (dispatch, getState) => {
-  const state = getState().tasks;
-
-  const current = state.current.map(day => {
+  const current = getCurrent(getState);
+  const updatedCurrent = current.map(day => {
     return day.map(item => {
       return item.id === id
         // If item matches ID, toggle completed value
@@ -173,11 +161,7 @@ const toggleCompleted = id => (dispatch, getState) => {
     });
   });
 
-  return tasks.setCurrent(current)
-    .then(() => {
-      dispatch(setCurrent(current));
-    })
-    .catch(e => { console.error(e); });
+  return saveCurrentTasks(dispatch, updatedCurrent);
 };
 
 // TODO: can this helper function be re-written and used directly within `addToArchive` action?
@@ -221,11 +205,7 @@ const addToArchive = items => (dispatch, getState) => {
   // Limit number of tasks in archive for non-pro users
   const newArchive = isPro ? archive : removeOldest(archive);
 
-  return tasks.setArchive(newArchive)
-    .then(() => {
-      dispatch(setArchive(newArchive));
-    })
-    .catch(e => { console.error(e); });
+  return saveArchiveTasks(dispatch, newArchive);
 };
 
 const deleteFromArchive = item => (dispatch, getState) => {
@@ -239,50 +219,8 @@ const deleteFromArchive = item => (dispatch, getState) => {
     return priority;
   });
 
-  return tasks.setArchive(archive)
-    .then(() => {
-      dispatch(setArchive(archive));
-    })
-    .catch(e => { console.error(e); });
+  return saveArchiveTasks(dispatch, archive);
 };
-
-// TODO: this has been re-written as a simple helper function above
-//  ...delete this action if no longer needed.
-// const deleteNumFromArchive = numTasks => (dispatch, getState) => {
-//   const stateTasks = getState().tasks;
-//   const user = getState().user;
-//   const isPro = !isEmpty(user.subscription);
-//
-//   if (isPro) return; // Don't delete from archive if user has pro subscription
-//
-//   const archive = [...stateTasks.archive];
-//   // Sort by earliest > latest created
-//   const chronologicalFlatTasks = sortBy(flatten(archive), 'dateCreated');
-//   // Reverse array so is sorted by latest > earliest created
-//   reverse(chronologicalFlatTasks);
-//
-//   const totalBeforeRemoval = numTasks + chronologicalFlatTasks.length;
-//
-//   if (totalBeforeRemoval > archiveLimitFree) {
-//     const numToRemove = totalBeforeRemoval - archiveLimitFree;
-//
-//     // Remove num (oldest) tasks from archive
-//     const items = chronologicalFlatTasks.slice(0, archive.length - numToRemove);
-//
-//     // Reconstruct items into priority order
-//     const low = items.filter(item => item.priority === 0);
-//     const medium = items.filter(item => item.priority === 1);
-//     const high = items.filter(item => item.priority === 2);
-//
-//     const prioritisedTasks = [low, medium, high];
-//
-//     return tasks.setArchive(prioritisedTasks)
-//       .then(() => {
-//         dispatch(setArchive(prioritisedTasks));
-//       })
-//       .catch(e => { console.error(e); });
-//   }
-// };
 
 /**
  * Remove `nextWeek` flags from the specified number of days prior to the current day,
