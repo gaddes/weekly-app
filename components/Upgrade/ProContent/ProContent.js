@@ -1,6 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+import Privacy from '../Privacy';
+import Terms from '../Terms';
+import Restore from '../Restore';
+
 export default function ProContent() {
   return (
     <View style={styles.container}>
@@ -25,6 +29,15 @@ export default function ProContent() {
       <Text style={styles.text}>
         To view or make changes to your subscription, please visit your App Store account
       </Text>
+
+      <View style={styles.terms}>
+        <Privacy />
+        <Terms />
+      </View>
+
+      <View style={styles.restore}>
+        <Restore />
+      </View>
     </View>
   );
 }
@@ -43,5 +56,22 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     marginVertical: 12,
-  }
+  },
+
+  terms: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+  },
+
+  restore: {
+    marginTop: 12,
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
 });

@@ -6,6 +6,9 @@ import isEmpty from 'lodash/isEmpty';
 import isNil from 'lodash/isNil';
 
 import UpgradeButton from '../UpgradeButton';
+import Privacy from '../Privacy';
+import Terms from '../Terms';
+import Restore from '../Restore';
 import userModel from '../../../data/store/user';
 
 // Map to convert package duration into a more readable string
@@ -102,6 +105,15 @@ export default function FreeContent() {
       <Text style={styles.text}>
         And remember, regardless of whether you go pro or stay free, we promise no ads... ever!
       </Text>
+
+      <View style={styles.terms}>
+        <Privacy />
+        <Terms />
+      </View>
+
+      <View style={styles.restore}>
+        <Restore />
+      </View>
     </View>
   );
 }
@@ -147,5 +159,22 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
+  },
+
+  terms: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    alignItems: 'flex-start',
+  },
+
+  restore: {
+    marginTop: 12,
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
 });
