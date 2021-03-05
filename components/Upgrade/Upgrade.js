@@ -1,6 +1,6 @@
 import React  from 'react';
 import { useSelector } from 'react-redux';
-import { View, Modal, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { ScrollView, View, Modal, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 
 import userModel from '../../data/store/user';
 import ProContent from './ProContent';
@@ -16,7 +16,7 @@ export default function Upgrade(props) {
       visible={props.visible}
       animationType="slide"
     >
-      <SafeAreaView>
+      <SafeAreaView style={{ height: '100%' }}>
         <View style={styles.header}>
           <Text style={styles.title}>Upgrade</Text>
 
@@ -25,9 +25,11 @@ export default function Upgrade(props) {
           </TouchableOpacity>
         </View>
 
-        <View style={styles.content}>
-          <Content />
-        </View>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <View style={styles.content}>
+            <Content />
+          </View>
+        </ScrollView>
       </SafeAreaView>
     </Modal>
   );
